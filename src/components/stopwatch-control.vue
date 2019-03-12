@@ -15,12 +15,15 @@ export default {
     endRace: function() {
       store.dispatch('race/stopRace')
     },
+    mark: function() {
+      store.dispatch('race/mark')
+    },
   },
 }
 </script>
 
 <template>
-  <div>
+  <div :class="$style.container">
     <BaseButton :disabled="raceStarted" @click="startRace"
       >Top d&eacute;part</BaseButton
     >
@@ -28,9 +31,24 @@ export default {
     <BaseButton :disabled="!raceStarted" @click="endRace"
       >Stopper la course</BaseButton
     >
+    <br />
+    <br />
+    <BaseButton :class="$style.bigbutton" :disabled="!raceStarted" @click="mark"
+      >Mark !</BaseButton
+    >
   </div>
 </template>
 
 <style lang="scss" module>
 @import '@design';
+
+.container {
+  width: 100%;
+  text-align: center;
+}
+
+.bigbutton {
+  width: 50%;
+  height: 10rem;
+}
 </style>

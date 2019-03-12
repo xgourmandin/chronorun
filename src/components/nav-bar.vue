@@ -15,6 +15,10 @@ export default {
           name: 'Inscription',
           title: 'Inscription',
         },
+        {
+          name: 'Resultats',
+          title: 'Résultats',
+        },
       ],
       loggedInNavRoutes: [
         {

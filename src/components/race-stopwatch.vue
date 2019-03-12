@@ -10,7 +10,7 @@ export default {
   },
   computed: {
     ...mapState('race', {
-      start: (state) => new Date(state.raceStartDate),
+      start: (state) => state.raceStartDate,
       raceStarted: (state) => state.raceStarted,
     }),
     elapsed: function() {
