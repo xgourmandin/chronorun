@@ -8,8 +8,12 @@ export default {
     return {
       persistentNavRoutes: [
         {
-          name: 'home',
-          title: 'Home',
+          name: 'chrono',
+          title: 'Chrono',
+        },
+        {
+          name: 'Inscription',
+          title: 'Inscription',
         },
       ],
       loggedInNavRoutes: [

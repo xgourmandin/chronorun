@@ -1,20 +1,21 @@
 <script>
+import { mapState } from 'vuex'
+
 export default {
-  props: {
-    start: {
-      type: Date,
-      required: false,
-      default: Date.now(),
-    },
-  },
   data() {
     return {
       now: Date.now(),
+      interval: null,
     }
   },
   computed: {
+    ...mapState('race', {
+      start: (state) => new Date(state.raceStartDate),
+      raceStarted: (state) => state.raceStarted,
+    }),
     elapsed: function() {
-      return this.now - this.start.getTime()
+      if (this.raceStarted) return this.now - this.start.getTime()
+      else return 0
     },
     hour: function() {
       return this.padNumber(this.milliToHour(this.elapsed))
@@ -26,11 +27,19 @@ export default {
       return this.padNumber(this.milliToSecond(this.elapsed))
     },
   },
+  watch: {
+    raceStarted: function(newVal, oldVal) {
+      if (newVal) {
+        this.startStopwatch()
+      } else {
+        this.stopStopwatch()
+      }
+    },
+  },
   created: function() {
-    var self = this
-    setInterval(function() {
-      self.$data.now = Date.now()
-    }, 1000)
+    if (this.raceStarted) {
+      this.startStopwatch()
+    }
   },
   methods: {
     padNumber: function(number) {
@@ -50,7 +59,19 @@ export default {
       return this.milliToChrono(milli, { divider: 1000, maxValue: 60 })
     },
     milliToChrono: function(milli, chronoUnit) {
-      return Math.floor(milli / chronoUnit.divider) % chronoUnit.maxValue
+      return Math.max(
+        0,
+        Math.floor(milli / chronoUnit.divider) % chronoUnit.maxValue
+      )
+    },
+    startStopwatch() {
+      let self = this
+      this.interval = setInterval(function() {
+        self.$data.now = Date.now()
+      }, 1000)
+    },
+    stopStopwatch() {
+      this.interval.clearInterval()
     },
   },
 }

@@ -3,8 +3,13 @@ import store from '@state/store'
 export default [
   {
     path: '/',
-    name: 'home',
+    name: 'chrono',
     component: () => lazyLoadView(import('@views/home')),
+  },
+  {
+    path: '/registration',
+    name: 'Inscription',
+    component: () => lazyLoadView(import('@views/registration')),
   },
   {
     path: '/login',

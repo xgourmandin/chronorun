@@ -1,19 +1,21 @@
 <script>
 import appConfig from '@src/app.config'
 import Layout from '@layouts/main'
+import RaceStopwatch from '../../components/race-stopwatch'
+import StopwatchControl from '../../components/stopwatch-control'
 
 export default {
   page: {
-    title: 'Home',
+    title: 'Chrono',
     meta: [{ name: 'description', content: appConfig.description }],
   },
-  components: { Layout },
+  components: { RaceStopwatch, StopwatchControl, Layout },
 }
 </script>
 
 <template>
   <Layout>
-    <h1>Home Page</h1>
-    <img src="@assets/images/logo.png" alt="Logo" />
+    <RaceStopwatch></RaceStopwatch>
+    <StopwatchControl></StopwatchControl>
   </Layout>
 </template>

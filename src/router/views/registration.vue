@@ -16,7 +16,6 @@ export default {
     <p>inscription</p>
   </Layout>
 </template>
-
 <style lang="scss" module>
 @import '@design';
 </style>
