@@ -39,9 +39,14 @@ export default {
 <style lang="scss" module>
 @import '@design';
 
+a {
+  color: $color-nav-link;
+  text-decoration: none;
+}
+
 .active a {
   font-weight: 600;
-  color: $color-link-text-active;
+  color: #f9f7f5;
   text-decoration: none;
   cursor: default;
 }

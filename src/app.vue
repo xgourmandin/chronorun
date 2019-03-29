@@ -54,11 +54,6 @@ body {
 // Base element styles
 // ===
 
-a,
-a:visited {
-  color: $color-link-text;
-}
-
 h1 {
   @extend %typography-xxlarge;
 }

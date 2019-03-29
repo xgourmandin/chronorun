@@ -7,13 +7,41 @@ export default {
     meta: [{ name: 'description', content: 'Inscrption des participants' }],
   },
   components: { Layout },
+  data() {
+    return {
+      name: '',
+      bib: '',
+      category: ''
+    }
+
+  },
+  methods: {
+    addContestant: function () {
+
+    }
+  }
 }
 </script>
 
 <template>
   <Layout>
-    Registration
-    <p>inscription</p>
+    <form
+      @submit.prevent="addContestant">
+      <label for="contestant">Nom et prénom</label>
+      <BaseInputText
+        id="contestant"
+        v-model="name"
+        name="username"
+        :placeholder="'Nom du participant'"
+      />
+      <label for="bib">Numéro de dossard</label>
+      <BaseInputText
+        id="bib"
+        v-model="bib"
+        name="bib"
+        :placeholder="'Dossard'"
+      />
+    </form>
   </Layout>
 </template>
 <style lang="scss" module>

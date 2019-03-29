@@ -1,4 +1,5 @@
 export const state = {
+  raceParams: getSavedState('race.params'),
   raceStarted: getSavedState('race.started'),
   raceStartDate: new Date(getSavedState('race.startDate')),
   markedTimes: getSavedState('race.markedTimes'),
@@ -14,6 +15,9 @@ export const getters = {
 }
 
 export const mutations = {
+  SET_RACE_PARAMS(state, newValue) {
+    state.raceParams = newValue;
+  },
   SET_RACE_START(state, newValue) {
     state.raceStarted = newValue
     state.raceStartDate = new Date()
@@ -24,7 +28,8 @@ export const mutations = {
   },
   MARK(state, time) {
     state.markedTimes.push({
-      time: time.getTime() - state.raceStartDate.getTime(),
+      id: state.markedTimes.length + 1,
+      temps: time.getTime() - state.raceStartDate.getTime(),
     })
     saveState('race.markedTimes', state.markedTimes)
   },
@@ -40,6 +45,9 @@ export const actions = {
   mark({ commit }) {
     commit('MARK', new Date())
   },
+  setParams({commit}, params) {
+    commit('SET_RACE_PARAMS', params)
+  }
 }
 
 function getSavedState(key) {

@@ -2,19 +2,24 @@ import store from '@state/store'
 
 export default [
   {
-    path: '/',
-    name: 'chrono',
-    component: () => lazyLoadView(import('@views/home')),
-  },
-  {
     path: '/registration',
     name: 'Inscription',
     component: () => lazyLoadView(import('@views/registration')),
   },
   {
+    path: '/',
+    name: 'chrono',
+    component: () => lazyLoadView(import('@views/home')),
+  },
+  {
     path: '/results',
     name: 'Resultats',
     component: () => lazyLoadView(import('@views/results')),
+  },
+  {
+    path: '/parameters',
+    name: 'parameters',
+    component: () => lazyLoadView(import('@views/parameters')),
   },
   {
     path: '/login',

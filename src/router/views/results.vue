@@ -1,6 +1,6 @@
 <script>
 import Layout from '@layouts/main'
-
+import RaceResultTable from '@components/race-result-table'
 export default {
   page: {
     title: 'Resultats',
@@ -8,13 +8,13 @@ export default {
       { name: 'description', content: 'Saisie des résultats de la course' },
     ],
   },
-  components: { Layout },
+  components: { Layout, RaceResultTable },
 }
 </script>
 
 <template>
   <Layout>
-    Results
+    <RaceResultTable></RaceResultTable>
   </Layout>
 </template>
 

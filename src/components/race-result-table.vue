@@ -66,18 +66,19 @@
   @import '@design';
 
   table {
+    width: 100%;
+    background-color: #fff;
     border: 2px solid #42b983;
     border-radius: 3px;
-    background-color: #fff;
   }
 
   th {
-    background-color: $color-button-bg;
     color: rgb(255, 255, 255);
     -webkit-user-select: none;
     -moz-user-select: none;
     -ms-user-select: none;
     user-select: none;
+    background-color: $color-button-bg;
   }
 
   td {
