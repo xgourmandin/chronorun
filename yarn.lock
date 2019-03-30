@@ -14743,6 +14743,11 @@ vue-style-loader@^4.1.0:
     hash-sum "^1.0.2"
     loader-utils "^1.0.2"
 
+vue-tabs-with-active-line@^1.1.4:
+  version "1.1.4"
+  resolved "https://registry.yarnpkg.com/vue-tabs-with-active-line/-/vue-tabs-with-active-line-1.1.4.tgz#524b6162779b14f59f01b163167bd43ba55dcbff"
+  integrity sha512-8u91mWq49H4nZ5dsCQwE9gYyuSqoh91wCpixOu5+/43SWBmUrm7d3weIvlwr/P9MeUy61iSbeiV7oeSYe4Bspw==
+
 vue-template-compiler@2.6.6:
   version "2.6.6"
   resolved "https://registry.yarnpkg.com/vue-template-compiler/-/vue-template-compiler-2.6.6.tgz#a807acbf3d51971d3721d75ecb1b927b517c1a02"

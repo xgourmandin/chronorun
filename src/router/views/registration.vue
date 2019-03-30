@@ -1,49 +1,25 @@
 <script>
-import Layout from '@layouts/main'
+  import Layout from '@layouts/main'
+  import ContestantForm from '@components/contestant-form'
+  import ContestantList from '@components/contestant-list'
 
-export default {
-  page: {
-    title: 'Inscription',
-    meta: [{ name: 'description', content: 'Inscrption des participants' }],
-  },
-  components: { Layout },
-  data() {
-    return {
-      name: '',
-      bib: '',
-      category: ''
-    }
-
-  },
-  methods: {
-    addContestant: function () {
-
-    }
+  export default {
+    components: {Layout, ContestantForm, ContestantList},
+    page: {
+      title: 'Inscription',
+      meta: [{name: 'description', content: 'Inscrption des participants'}],
+    },
   }
-}
 </script>
 
 <template>
   <Layout>
-    <form
-      @submit.prevent="addContestant">
-      <label for="contestant">Nom et prénom</label>
-      <BaseInputText
-        id="contestant"
-        v-model="name"
-        name="username"
-        :placeholder="'Nom du participant'"
-      />
-      <label for="bib">Numéro de dossard</label>
-      <BaseInputText
-        id="bib"
-        v-model="bib"
-        name="bib"
-        :placeholder="'Dossard'"
-      />
-    </form>
+    <ContestantForm></ContestantForm>
+    <ContestantList></ContestantList>
   </Layout>
 </template>
 <style lang="scss" module>
-@import '@design';
+  @import '@design';
+
+
 </style>

@@ -6,7 +6,8 @@ import camelCase from 'lodash/camelCase'
 // https://fontawesome.com/icons
 fontAwesomeIconLibrary.add(
   require('@fortawesome/free-solid-svg-icons/faSync').definition,
-  require('@fortawesome/free-solid-svg-icons/faUser').definition
+  require('@fortawesome/free-solid-svg-icons/faUser').definition,
+  require('@fortawesome/free-solid-svg-icons/faTrash').definition,
 )
 
 export default {

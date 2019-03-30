@@ -1,5 +1,5 @@
 export const state = {
-  raceParams: getSavedState('race.params'),
+  raceParams: getSavedState('race.params') || {categories: []},
   raceStarted: getSavedState('race.started'),
   raceStartDate: new Date(getSavedState('race.startDate')),
   markedTimes: getSavedState('race.markedTimes'),
@@ -15,8 +15,13 @@ export const getters = {
 }
 
 export const mutations = {
-  SET_RACE_PARAMS(state, newValue) {
-    state.raceParams = newValue;
+  ADD_CATEGORY(state, catToAdd) {
+    state.raceParams.categories.push(catToAdd);
+    saveState('race.params', state.raceParams)
+  },
+  DELETE_CATEGORY(state, catToDelete) {
+    state.raceParams.categories.splice(state.raceParams.categories.indexOf(catToDelete), 1);
+    saveState('race.params', state.raceParams)
   },
   SET_RACE_START(state, newValue) {
     state.raceStarted = newValue
@@ -45,9 +50,12 @@ export const actions = {
   mark({ commit }) {
     commit('MARK', new Date())
   },
-  setParams({commit}, params) {
-    commit('SET_RACE_PARAMS', params)
-  }
+  addCategory({commit}, {category}) {
+    commit('ADD_CATEGORY', category)
+  },
+  deleteCategory({commit}, {category}) {
+    commit('DELETE_CATEGORY', category)
+  },
 }
 
 function getSavedState(key) {
