@@ -65,6 +65,9 @@ export const mutations = {
   },
   ADD_CONTESTANT(state, contestant) {
     state.contestants.push(contestant)
+  },
+  DELETE_CONTESTANT(state, contestant) {
+    state.contestants.splice(state.contestants.findIndex(c => c.bib === contestant.bib), 1)
   }
 }
 
@@ -79,8 +82,11 @@ export const actions = {
     commit('MARK', new Date())
   },
   addContestant({commit}, contestant) {
-    contestant = fillCategory(contestant)
+    contestant = fillCategoryAndSex(contestant)
     commit('ADD_CONTESTANT', contestant)
+  },
+  deleteContestant({commit}, contestant) {
+    commit('DELETE_CONTESTANT', contestant)
   }
 }
 
@@ -92,9 +98,15 @@ function saveState(key, state) {
   window.localStorage.setItem(key, JSON.stringify(state))
 }
 
-function fillCategory(contestant) {
+function fillCategoryAndSex(contestant) {
+  let sex = 'M'
+  if(contestant.sex) {
+    sex='F'
+  }
+  contestant.sex = sex
+
   let age = new Date().getFullYear() - contestant.birthYear
   let cat = CATEGORY_MAP.find( e => age >= e.minAge && age <= e.maxAge )
-  contestant.category = cat.code
+  contestant.category = cat.code+sex
   return contestant
 }

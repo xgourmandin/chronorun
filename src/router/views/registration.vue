@@ -14,7 +14,7 @@
 
 <template>
   <Layout>
-    <ContestantForm></ContestantForm>
+    <ContestantForm></ContestantForm><br>
     <ContestantList></ContestantList>
   </Layout>
 </template>
