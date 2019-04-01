@@ -1,84 +1,62 @@
 <script>
-  import CategoryCard from "./category-card";
-  import store from '@state/store'
-  import {mapState} from 'vuex'
+  import {mapState, mapMutations} from 'vuex'
+  import _ from 'lodash'
+  import formatDate from '@utils/format-date'
 
   export default {
-    components: {CategoryCard},
-    data() {
-      return {
-        category: '',
-      }
-
-    },
     computed: {
       ...mapState('race', {
-        categories: (state) => state.raceParams.categories
+        raceName: state => state.raceParams.name,
+        distance: state => state.raceParams.distance,
+        raceDate: state => formatDate( state.raceParams.raceDate),
       })
     },
     methods: {
-      addCategory: function () {
-        if (this.category !== '') {
-          store.dispatch('race/addCategory', {category: this.category})
-          this.category = ''
-        }
-      },
-      deleteCategory(cat) {
-        if (cat) {
-          store.dispatch('race/deleteCategory', {category: cat})
-        }
-      },
-      saveParams: function () {
-
-      }
-    }
+      ...mapMutations('race', ['updateRaceName', 'updateRaceDistance', 'updateRaceDate']),
+      debounceUpdate: _.debounce(function (mutator, e) {
+          mutator(e.target.value)
+        }, 500)
+    },
   }
 </script>
 
 <template>
-  <div>
-    <div :class="$style.halfpage">
-      <label for="category">Catégories</label>
-      <BaseInputText
-        id="category"
-        v-model="category"
-        name="category"
-        :placeholder="'Catégorie de course'"
-        @keyup.enter="addCategory"
-      />
-      <BaseButton @click="addCategory">Ajouter</BaseButton>
-    </div>
-    <div :class="$style.halfpage">
-      <h5>Cat&eacute;gories disponible</h5>
-      <CategoryCard v-for="cat in categories" :key="cat" :name="cat" :class="$style.inlinecard"
-                    @delete-category="deleteCategory"
-      ></CategoryCard>
-    </div>
+  <div :class="$style.paramsContainer">
+    <v-text-field
+      id="raceName"
+      label="Nom de la course"
+      :value="raceName"
+      name="raceName"
+      :placeholder="'Nom de course'"
+      @input="debounceUpdate(updateRaceName, $event)"
+    />
+    <v-text-field
+      id="racedist"
+      :value="distance"
+      label="Distance"
+      type="number"
+      name="racedist"
+      step="0.1"
+      @input="debounceUpdate(updateRaceDistance, $event)"
+    />
+    <v-text-field
+      id="racedate"
+      label="Date de la course"
+      type="date"
+      :value="raceDate"
+      name="racedate"
+      @input="debounceUpdate(updateRaceDate,$event)"
+    />
   </div>
 </template>
 
 <style lang="scss" module>
   @import '@design';
 
-  .halfpage {
-    display: inline-table;
-    width: 50%;
-    margin-right: 1em;
-  }
-
-  .halfpage:nth-last-child(1) {
-    width: 48%;
-    margin-right: 0;
-  }
-
-  .halfpage > label {
+  .paramsContainer > label {
     display: block;
     padding-bottom: 0.25em;
     color: #35495e;
   }
 
-  .inlinecard {
-    display: inherit;
-    margin-right: 1em;
-  }
 </style>

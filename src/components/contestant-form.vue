@@ -1,52 +1,110 @@
 <script>
-  // import store from '@state/store'
-  import { mapState } from 'vuex'
+  import store from '@state/store'
 
-export default {
+  export default {
 
-  data() {
-    return {
-      name: '',
-      bib: '',
-      category: ''
-    }
+    data() {
+      return {
+        name: '',
+        birthYear: 1950,
+        bib: '',
+        category: '',
+        sex: false,
+        club: ''
+      }
 
-  },
-  computed: {
-    ...mapState('race', {
-      choices: (state) => state.raceParams.categories.map(cat => { return {value: cat.toLowerCase(), label: cat} })
-    })
-  },
-  methods: {
-    addContestant: function () {
-
+    },
+    computed: {
+      form() {
+        return {
+          name: this.name,
+          birthYear: this.birthYear,
+          bib: this.bib,
+          category: this.category,
+          sex: this.sex,
+          club: this.club
+        }
+      }
+    },
+    methods: {
+      addContestant: function () {
+        store.dispatch('race/addContestant', this.form)
+      }
     }
   }
-}
 </script>
 
 <template>
   <form
     @submit.prevent="addContestant">
-    <label for="contestant">Nom et prénom</label>
-    <BaseInputText
-      id="contestant"
-      v-model="name"
-      name="username"
-      :placeholder="'Nom du participant'"
+    <div :class="$style.halfpage">
+      <v-text-field
+        id="contestant"
+        v-model="name"
+        label="Nom et prénom"
+        name="username"
+        :class="$style.smallinput"
+      />
+    </div>
+    <div :class="$style.halfpage">
+      <v-text-field
+        id="birth"
+        v-model="birthYear"
+        label="Année de naissance"
+        type="number"
+        name="birth"
+        :class="$style.smallinput"
+      />
+    </div>
+    <div :class="$style.halfpage">
+      <v-text-field
+        id="bib"
+        v-model="bib"
+        label="Dossard"
+        type="number"
+        name="bib"
+        :class="$style.smallinput"
+      />
+    </div>
+    <div :class="$style.halfpage">
+      <v-switch
+        id="sex"
+        v-model="sex"
+        name="sex"
+      >
+        <template v-slot:prepend>
+          Homme &nbsp;
+        </template>
+        <template v-slot:append>
+          Femme
+        </template>
+      </v-switch>
+    </div>
+    <v-text-field
+      id="club"
+      v-model="club"
+      label="Club"
+      name="club"
     />
-    <label for="bib">Numéro de dossard</label>
-    <BaseInputText
-      id="bib"
-      v-model="bib"
-      name="bib"
-      :placeholder="'Dossard'"
-    />
-    <label for="category">Catégorie</label>
-    <BaseSelect id="category" :choices="choices"></BaseSelect>
+    <BaseButton type="submit">Inscrire</BaseButton>
   </form>
 </template>
 
 <style lang="scss" module>
-@import '@design';
+  @import '@design';
+
+  .halfpage {
+    display: inline-table;
+    width: 50%;
+  }
+
+  .halfpage > label {
+    display: block;
+    padding-bottom: 0.25em;
+    color: #35495e;
+  }
+
+  .smallinput {
+    width: 80%;
+  }
 </style>

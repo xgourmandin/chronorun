@@ -1,8 +1,29 @@
+const CATEGORY_MAP = [
+  { minAge: 0, maxAge: 6, code: 'BB' },
+  { minAge: 7, maxAge: 9, code: 'EA' },
+  { minAge: 10,maxAge: 11, code: 'PO' },
+  { minAge: 12,maxAge: 13, code: 'BE' },
+  { minAge: 14,maxAge: 15, code: 'MA' },
+  { minAge: 16,maxAge: 17, code: 'CA' },
+  { minAge: 18,maxAge: 19, code: 'JU' },
+  { minAge: 20,maxAge: 22, code: 'ES' },
+  { minAge: 23,maxAge: 39, code: 'SE' },
+  { minAge: 40,maxAge: 49, code: 'V1' },
+  { minAge: 50,maxAge: 59, code: 'V2' },
+  { minAge: 60,maxAge: 69, code: 'V3' },
+  { minAge: 70,maxAge: 79, code: 'V4' },
+  { minAge: 80,maxAge: 99, code: 'V5' },
+]
+
+
+
+
 export const state = {
-  raceParams: getSavedState('race.params') || {categories: []},
+  raceParams: getSavedState('race.params') || {name: '', distance: 0, raceDate: new Date()},
   raceStarted: getSavedState('race.started'),
   raceStartDate: new Date(getSavedState('race.startDate')),
   markedTimes: getSavedState('race.markedTimes'),
+  contestants: getSavedState('race.contestants') || [],
 }
 
 export const getters = {
@@ -15,12 +36,16 @@ export const getters = {
 }
 
 export const mutations = {
-  ADD_CATEGORY(state, catToAdd) {
-    state.raceParams.categories.push(catToAdd);
+  updateRaceName(state, value) {
+    state.raceParams.name = value
     saveState('race.params', state.raceParams)
   },
-  DELETE_CATEGORY(state, catToDelete) {
-    state.raceParams.categories.splice(state.raceParams.categories.indexOf(catToDelete), 1);
+  updateRaceDistance(state, value) {
+    state.raceParams.distance = Number(value)
+    saveState('race.params', state.raceParams)
+  },
+  updateRaceDate(state, value) {
+    state.raceParams.raceDate = value
     saveState('race.params', state.raceParams)
   },
   SET_RACE_START(state, newValue) {
@@ -38,6 +63,9 @@ export const mutations = {
     })
     saveState('race.markedTimes', state.markedTimes)
   },
+  ADD_CONTESTANT(state, contestant) {
+    state.contestants.push(contestant)
+  }
 }
 
 export const actions = {
@@ -50,12 +78,10 @@ export const actions = {
   mark({ commit }) {
     commit('MARK', new Date())
   },
-  addCategory({commit}, {category}) {
-    commit('ADD_CATEGORY', category)
-  },
-  deleteCategory({commit}, {category}) {
-    commit('DELETE_CATEGORY', category)
-  },
+  addContestant({commit}, contestant) {
+    contestant = fillCategory(contestant)
+    commit('ADD_CONTESTANT', contestant)
+  }
 }
 
 function getSavedState(key) {
@@ -64,4 +90,11 @@ function getSavedState(key) {
 
 function saveState(key, state) {
   window.localStorage.setItem(key, JSON.stringify(state))
+}
+
+function fillCategory(contestant) {
+  let age = new Date().getFullYear() - contestant.birthYear
+  let cat = CATEGORY_MAP.find( e => age >= e.minAge && age <= e.maxAge )
+  contestant.category = cat.code
+  return contestant
 }
