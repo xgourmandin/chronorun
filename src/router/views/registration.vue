@@ -14,12 +14,14 @@
 
 <template>
   <Layout>
-    <ContestantForm></ContestantForm><br>
+    <ContestantForm :class="$style.container"></ContestantForm>
     <ContestantList></ContestantList>
   </Layout>
 </template>
 <style lang="scss" module>
   @import '@design';
 
-
+.container {
+  margin-bottom: 1em;
+}
 </style>

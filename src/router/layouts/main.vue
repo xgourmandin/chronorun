@@ -9,9 +9,9 @@ export default {
 <template>
   <div>
     <NavBar />
-    <div :class="$style.container">
+    <v-app :class="$style.container">
       <slot />
-    </div>
+    </v-app>
   </div>
 </template>
 

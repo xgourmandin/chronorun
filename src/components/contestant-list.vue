@@ -13,7 +13,10 @@
           {text: 'Catégorie', value: 'category'},
           {text: 'Sexe', value: 'sex'},
           {text: 'Actions', value: 'act', sortable: false}
-        ]
+        ],
+        pagination: {
+          rowsPerPage: 10
+        },
       }
     },
     computed: {
@@ -40,7 +43,7 @@
       <v-text-field
         v-model="search"
         append-icon="search"
-        label="Search"
+        label="Chercher"
         single-line
         hide-details
       ></v-text-field>
@@ -50,16 +53,17 @@
       :headers="headers"
       :items="contestants"
       :search="search"
+      :pagination.sync="pagination"
     >
       <template v-slot:no-data>
         Pas encore d'inscrit
       </template>
       <template v-slot:items="props">
         <td>{{ props.item.bib }}</td>
-        <td class="text-xs-right">{{ props.item.name}}</td>
-        <td class="text-xs-right">{{ props.item.birthYear }}</td>
-        <td class="text-xs-right">{{ props.item.category }}</td>
-        <td class="text-xs-right">{{ props.item.sex }}</td>
+        <td>{{ props.item.name}}</td>
+        <td>{{ props.item.birthYear }}</td>
+        <td>{{ props.item.category }}</td>
+        <td>{{ props.item.sex }}</td>
         <td class="justify-center layout px-0">
           <v-icon
             small

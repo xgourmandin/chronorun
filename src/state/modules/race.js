@@ -81,9 +81,15 @@ export const actions = {
   mark({ commit }) {
     commit('MARK', new Date())
   },
-  addContestant({commit}, contestant) {
-    contestant = fillCategoryAndSex(contestant)
-    commit('ADD_CONTESTANT', contestant)
+  addContestant({commit, state}, contestant) {
+    if (!findContestantByBib(state.contestants, contestant.bib)) {
+      contestant = fillCategoryAndSex(contestant)
+      commit('ADD_CONTESTANT', contestant)
+      return Promise.resolve(true)
+    }
+    else {
+      return Promise.reject(Error("Le dossard "+ contestant.bib+ " existe déjà"))
+    }
   },
   deleteContestant({commit}, contestant) {
     commit('DELETE_CONTESTANT', contestant)
@@ -96,6 +102,10 @@ function getSavedState(key) {
 
 function saveState(key, state) {
   window.localStorage.setItem(key, JSON.stringify(state))
+}
+
+function findContestantByBib(contestants, bib) {
+  return contestants.find(c => c.bib === bib)
 }
 
 function fillCategoryAndSex(contestant) {

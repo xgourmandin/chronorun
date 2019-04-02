@@ -10,7 +10,9 @@
         bib: '',
         category: '',
         sex: false,
-        club: ''
+        club: '',
+        errorMessage: '',
+        alert: false
       }
 
     },
@@ -28,7 +30,11 @@
     },
     methods: {
       addContestant: function () {
-        store.dispatch('race/addContestant', this.form)
+        store.dispatch('race/addContestant', this.form).catch(error => {
+          this.alert = true
+          console.log(error.message)
+          this.errorMessage = error.message
+        })
       }
     }
   }
@@ -87,6 +93,13 @@
       name="club"
     />
     <BaseButton type="submit">Inscrire</BaseButton>
+    <v-alert
+      v-model="alert"
+      dismissible
+      type="error"
+    >
+      {{ errorMessage }}
+    </v-alert>
   </form>
 </template>
 

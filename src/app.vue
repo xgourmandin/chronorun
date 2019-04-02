@@ -34,6 +34,8 @@ export default {
 // https://github.com/rstacruz/nprogress
 @import '~nprogress/nprogress.css';
 
+@import '~vuetify/dist/vuetify.min.css';
+
 // Design variables and utilities from src/design.
 @import '@design';
 
