@@ -24,6 +24,9 @@
         contestants: state => state.contestants
       })
     },
+    mounted() {
+      store.dispatch('race/loadContestants')
+    },
     methods: {
       editItem: function (contestant) {
 

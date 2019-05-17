@@ -1,3 +1,5 @@
+import api from '@utils/api'
+
 const CATEGORY_MAP = [
   { minAge: 0, maxAge: 6, code: 'BB' },
   { minAge: 7, maxAge: 9, code: 'EA' },
@@ -64,11 +66,15 @@ export const mutations = {
     saveState('race.markedTimes', state.markedTimes)
   },
   ADD_CONTESTANT(state, contestant) {
-    state.contestants.push(contestant)
+      state.contestants.push(contestant)
   },
   DELETE_CONTESTANT(state, contestant) {
     state.contestants.splice(state.contestants.findIndex(c => c.bib === contestant.bib), 1)
-  }
+  },
+  SET_CONTESTANTS(state, contestants) {
+    state.contestants = contestants
+    saveState('race.contestants', contestants)
+  },
 }
 
 export const actions = {
@@ -84,7 +90,9 @@ export const actions = {
   addContestant({commit, state}, contestant) {
     if (!findContestantByBib(state.contestants, contestant.bib)) {
       contestant = fillCategoryAndSex(contestant)
-      commit('ADD_CONTESTANT', contestant)
+      api().post("/contestant", contestant).then(result => {
+        commit('ADD_CONTESTANT', contestant)
+      })
       return Promise.resolve(true)
     }
     else {
@@ -93,7 +101,11 @@ export const actions = {
   },
   deleteContestant({commit}, contestant) {
     commit('DELETE_CONTESTANT', contestant)
-  }
+  },
+  loadContestants({commit}){
+    api().get("/contestant").then(r => r.data._embedded.contestant)
+      .then(contestants => commit('SET_CONTESTANTS', contestants))
+  },
 }
 
 function getSavedState(key) {
