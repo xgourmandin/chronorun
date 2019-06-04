@@ -4,25 +4,22 @@ import lombok.Builder;
 import lombok.Data;
 import org.springframework.data.annotation.Id;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+
 @Data
 @Builder
-public class Contestant {
+public class Race {
 
     @Id
     private String id;
 
     private String name;
 
-    private Integer birthYear;
+    private Float distance;
 
-    private Integer bib;
+    private LocalDate raceDate;
 
-    private Sex sex;
-
-    private String club;
-
-    private String category;
-
-    private String race;
+    private LocalDateTime raceStartDate;
 
 }
