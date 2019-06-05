@@ -88,7 +88,7 @@ export const actions = {
     commit('MARK', new Date())
   },
   addContestant({commit, state}, contestant) {
-    if (!findContestantByBib(state.contestants, contestant.bib)) {
+    if (!findContestantByBib(state.contestants, Number(contestant.bib))) {
       contestant = fillCategoryAndSex(contestant)
       api().post("/contestant", contestant).then(result => {
         commit('ADD_CONTESTANT', contestant)
@@ -100,10 +100,18 @@ export const actions = {
     }
   },
   deleteContestant({commit}, contestant) {
-    commit('DELETE_CONTESTANT', contestant)
+    api().delete("/contestant/"+contestant.id).then( r => {
+      commit('DELETE_CONTESTANT', contestant)
+    })
   },
   loadContestants({commit}){
-    api().get("/contestant").then(r => r.data._embedded.contestant)
+    api().get("/contestant").then(r => {
+      let contestants = r.data._embedded.contestant
+      return contestants.map(c => {
+        delete c._links
+        return c
+      })
+    })
       .then(contestants => commit('SET_CONTESTANTS', contestants))
   },
 }

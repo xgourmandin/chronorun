@@ -11,4 +11,5 @@ import java.util.Optional;
 @CrossOrigin
 public interface ContestantRepository extends MongoRepository<Contestant, String> {
     Optional<Contestant> findByBib(Integer bib);
+
 }

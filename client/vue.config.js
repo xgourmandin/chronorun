@@ -22,5 +22,6 @@ module.exports = {
         { proxy: { '/api': { target: process.env.API_BASE_URL } } }
       : // Proxy API endpoints a local mock API.
         { before: require('./tests/mock-api') }),
+    port: 8081
   },
 }
