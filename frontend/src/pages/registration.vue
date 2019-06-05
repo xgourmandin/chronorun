@@ -17,9 +17,4 @@
     <ContestantList></ContestantList>
   </v-flex>
 </template>
-<style scoped>
 
-.container {
-  margin-bottom: 1em;
-}
-</style>

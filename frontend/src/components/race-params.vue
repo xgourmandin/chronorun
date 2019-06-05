@@ -1,34 +1,32 @@
 <script>
-  import {mapState, mapMutations} from 'vuex'
-  import _ from 'lodash'
-  import formatDate from '../utils/format-date'
+  import {mapMutations} from 'vuex'
+  import formatDate from "../utils/format-date";
 
   export default {
+    data() {
+      return {
+      name: 'toto',
+      distance: 0,
+      raceDate: formatDate(new Date())
+      }
+    },
     computed: {
-      ...mapState('race', {
-        raceName: state => state.raceParams.name,
-        distance: state => state.raceParams.distance,
-        raceDate: state => formatDate( state.raceParams.raceDate),
-      })
+
     },
     methods: {
-      ...mapMutations('race', ['updateRaceName', 'updateRaceDistance', 'updateRaceDate']),
-      debounceUpdate: _.debounce(function (mutator, e) {
-          mutator(e.target.value)
-        }, 500)
+      ...mapMutations(['updateRaceName', 'updateRaceDistance', 'updateRaceDate']),
     },
   }
 </script>
 
 <template>
-  <div class="paramsContainer">
+    <form>
     <v-text-field
       id="raceName"
       label="Nom de la course"
-      :value="raceName"
+      :value="name"
       name="raceName"
       :placeholder="'Nom de course'"
-      @input="debounceUpdate(updateRaceName, $event)"
     />
     <v-text-field
       id="racedist"
@@ -37,7 +35,6 @@
       type="number"
       name="racedist"
       step="0.1"
-      @input="debounceUpdate(updateRaceDistance, $event)"
     />
     <v-text-field
       id="racedate"
@@ -45,17 +42,11 @@
       type="date"
       :value="raceDate"
       name="racedate"
-      @input="debounceUpdate(updateRaceDate,$event)"
     />
-  </div>
+      <v-btn color="success">Créer</v-btn>
+    </form>
 </template>
 
 <style scoped>
-
-  .paramsContainer > label {
-    display: block;
-    padding-bottom: 0.25em;
-    color: #35495e;
-  }
 
 </style>

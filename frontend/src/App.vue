@@ -16,7 +16,7 @@
 
                   <v-list-tile-content>
                       <v-list-tile-title>
-                          <router-link :to="item.route">{{ item.title }}</router-link>
+                          <router-link active-class="router-link-active" class="router-link" exact :to="item.route">{{ item.title }}</router-link>
                       </v-list-tile-title>
                   </v-list-tile-content>
               </v-list-tile>
@@ -43,12 +43,24 @@ export default {
     return {
         drawer: null,
         items: [
-            { title: 'Courses', icon: 'dashboard', route: '/' },
-            { title: 'Inscriptions', icon: 'question_answer', route: 'registration' },
-            { title: 'Chronomètre', icon: 'question_answer', route: 'chrono' },
-            { title: 'Résultats', icon: 'question_answer', route:'results' },
+            { title: 'Courses', icon: 'settings', route: '/' },
+            { title: 'Inscriptions', icon: 'edit', route: 'registration' },
+            { title: 'Chronomètre', icon: 'schedule', route: 'chrono' },
+            { title: 'Résultats', icon: 'assignment', route:'results' },
         ]
     }
   }
 }
 </script>
+
+<style>
+  .router-link {
+    text-decoration: none;
+    color: grey;
+  }
+
+  .router-link-active {
+    text-decoration: none;
+    color: white;
+  }
+</style>

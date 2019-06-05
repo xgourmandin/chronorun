@@ -1,18 +1,14 @@
 <script>
   import {mapState} from 'vuex'
-  import store from '../store'
-  import EventBus from '../event-bus'
 
   export default {
     data() {
       return {
         search: '',
         headers: [
-          {text: 'Dossard', value: 'bib'},
           {text: 'Nom', value: 'name'},
-          {text: 'Naissance', value: 'birthYear'},
-          {text: 'Catégorie', value: 'category'},
-          {text: 'Sexe', value: 'sex'},
+          {text: 'Distance', value: 'distance'},
+          {text: 'Date', value: 'raceDate'},
           {text: 'Actions', value: 'act', sortable: false}
         ],
         pagination: {
@@ -22,21 +18,9 @@
     },
     computed: {
       ...mapState({
-        contestants: state => state.contestants
+        races: state => state.races
       })
     },
-    mounted() {
-      store.dispatch('loadContestants')
-    },
-    methods: {
-      editItem: function (contestant) {
-        EventBus.$emit('edit_contestant', contestant)
-      },
-      deleteItem: function (contestant) {
-        store.dispatch('deleteContestant', contestant)
-      }
-    }
-
   }
 </script>
 
@@ -55,19 +39,17 @@
 
     <v-data-table
       :headers="headers"
-      :items="contestants"
+      :items="races"
       :search="search"
       :pagination.sync="pagination"
     >
       <template v-slot:no-data>
-        Pas encore d'inscrit
+        Pas de course enregistré
       </template>
       <template v-slot:items="props">
-        <td>{{ props.item.bib }}</td>
-        <td>{{ props.item.name}}</td>
-        <td>{{ props.item.birthYear }}</td>
-        <td>{{ props.item.category }}</td>
-        <td>{{ props.item.sex }}</td>
+        <td>{{ props.item.name }}</td>
+        <td>{{ props.item.distance }}</td>
+        <td>{{ props.item.raceDate }}</td>
         <td class="justify-center layout px-0">
           <v-icon
             small
@@ -78,13 +60,19 @@
           </v-icon>
           <v-icon
             small
+            class="mr-2"
             @click="deleteItem(props.item)"
           >
             delete
+          </v-icon>
+          <v-icon
+            small
+            @click="deleteItem(props.item)"
+          >
+            assignment
           </v-icon>
         </td>
       </template>
     </v-data-table>
   </v-card>
 </template>
-

@@ -23,7 +23,7 @@ const CATEGORY_MAP = [
 
 const store = new Vuex.Store({
   state: {
-    raceParams: getSavedState('race.params') || {name: '', distance: 0, raceDate: new Date()},
+    races: getSavedState('races') || [],
     raceStarted: getSavedState('race.started'),
     raceStartDate: new Date(getSavedState('race.startDate')),
     markedTimes: getSavedState('race.markedTimes'),
@@ -93,8 +93,9 @@ const store = new Vuex.Store({
     addContestant({commit, state}, contestant) {
       if (!findContestantByBib(state.contestants, Number(contestant.bib))) {
         contestant = fillCategoryAndSex(contestant)
-        api().post("/contestant", contestant).then(() => {
-          commit('ADD_CONTESTANT', contestant)
+        api().post("/contestant", contestant).then(c => {
+          delete c.data._links
+          commit('ADD_CONTESTANT', c.data)
         })
         return Promise.resolve(true)
       }
@@ -103,8 +104,12 @@ const store = new Vuex.Store({
       }
     },
     editContestant({commit}, contestant) {
-      api().patch("/contestant/"+contestant.id, contestant).then( c =>
-        commit('REPLACE_CONTESTANT', c)
+      contestant = fillCategoryAndSex(contestant)
+      api().patch("/contestant/"+contestant.id, contestant).then( c => {
+          let result = c.data
+          delete result._links
+          commit('REPLACE_CONTESTANT', result)
+        }
       )
     },
     deleteContestant({commit}, contestant) {

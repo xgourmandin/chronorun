@@ -1,18 +1,21 @@
 <script>
   import store from '../store'
+  import EventBus from "../event-bus";
 
   export default {
 
     data() {
       return {
         name: '',
-        birthYear: 1950,
+        birthYear: 19,
         bib: '',
         category: '',
         sex: false,
         club: '',
         errorMessage: '',
-        alert: false
+        alert: false,
+        editMode: false,
+        editedId: null
       }
 
     },
@@ -28,12 +31,41 @@
         }
       }
     },
+    mounted() {
+      EventBus.$on('edit_contestant', function (contestant) {
+        this.editMode = true;
+        this.editedId = contestant.id;
+        this.name = contestant.name;
+        this.birthYear = contestant.birthYear;
+        this.bib = contestant.bib;
+        this.category = contestant.category;
+        this.sex = contestant.sex == 'F';
+        this.club = contestant.club
+      }.bind(this))
+    },
     methods: {
-      addContestant: function () {
-        store.dispatch('addContestant', this.form).catch(error => {
-          this.alert = true
-          this.errorMessage = error.message
-        })
+      cleanForm() {
+        this.alert = false;
+        this.name = '';
+        this.birthYear = 19;
+        this.bib = '';
+        this.category = '';
+        this.sex = false;
+        this.club = ''
+      },
+      saveContestant: function () {
+        if (this.editMode) {
+          this.editMode = false;
+          let editedContestant = this.form;
+          editedContestant.id = this.editedId;
+          store.dispatch('editContestant', editedContestant)
+            .then( () => this.cleanForm())
+        } else {
+          store.dispatch('addContestant', this.form).then( () => this.cleanForm()).catch(error => {
+            this.alert = true;
+            this.errorMessage = error.message
+          })
+        }
       }
     }
   }
@@ -41,7 +73,7 @@
 
 <template>
   <form
-    @submit.prevent="addContestant">
+    @submit.prevent="saveContestant">
     <div class="halfpage">
       <v-text-field
         id="contestant"
@@ -91,7 +123,7 @@
       label="Club"
       name="club"
     />
-    <v-btn color="success" type="submit">Inscrire</v-btn>
+    <v-btn color="success" type="submit">{{editMode ? 'Editer' : 'Inscrire'}}</v-btn>
     <v-alert
       v-model="alert"
       dismissible
