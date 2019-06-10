@@ -1,5 +1,5 @@
 <script>
-import RaceParams from '../components/race-params'
+import RaceParams from '../components/race-form'
 import RaceList from '../components/race-list'
 
 export default {

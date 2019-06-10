@@ -10,8 +10,8 @@ export default {
   },
   computed: {
     ...mapState({
-      start: (state) => state.raceStartDate,
-      raceStarted: (state) => state.raceStarted,
+      start: (state) => state.race.raceStartDate,
+      raceStarted: (state) => state.race.raceStarted,
     }),
     elapsed: function() {
       if (this.raceStarted) return this.now - this.start.getTime()
@@ -65,13 +65,15 @@ export default {
       )
     },
     startStopwatch() {
-      let self = this
       this.interval = setInterval(function() {
-        self.$data.now = Date.now()
-      }, 1000)
+        this.now = Date.now()
+      }.bind(this), 1000)
     },
     stopStopwatch() {
-      this.interval.clearInterval()
+      if (this.interval) {
+       clearInterval( this.interval)
+        this.interval = null
+      }
     },
   },
 }
@@ -79,10 +81,9 @@ export default {
 
 <template>
   <div class="chrono">
-    <p
-      >{{ hour }}<span>H</span>{{ minute }}<span>M</span>{{ second
-      }}<span>s</span></p
-    >
+    <p>
+      {{ hour }}<span>H</span>{{ minute }}<span>M</span>{{ second }}<span>s</span>
+    </p>
   </div>
 </template>
 

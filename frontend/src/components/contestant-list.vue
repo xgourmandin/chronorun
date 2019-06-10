@@ -22,7 +22,7 @@
     },
     computed: {
       ...mapState({
-        contestants: state => state.contestants
+        contestants: state => state.contestant.contestants
       })
     },
     mounted() {

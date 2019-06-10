@@ -1,5 +1,7 @@
 <script>
   import {mapState} from 'vuex'
+  import EventBus from "../event-bus"
+  import store from '../store'
 
   export default {
     data() {
@@ -18,9 +20,23 @@
     },
     computed: {
       ...mapState({
-        races: state => state.races
+        races: state => state.race.races
       })
     },
+    mounted() {
+      store.dispatch('loadRaces')
+    },
+    methods: {
+      editItem: function (race) {
+        EventBus.$emit('edit_race', race)
+      },
+      deleteItem: function (race) {
+        store.dispatch('deleteRace', race)
+      },
+      getResults: function () {
+        
+      }
+    }
   }
 </script>
 
@@ -67,7 +83,7 @@
           </v-icon>
           <v-icon
             small
-            @click="deleteItem(props.item)"
+            @click="getResults(props.item)"
           >
             assignment
           </v-icon>
