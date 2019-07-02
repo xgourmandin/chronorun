@@ -2,16 +2,11 @@
   import {mapState} from 'vuex'
 
   export default {
-    filters: {
-      capitalize: function (str) {
-        return str.charAt(0).toUpperCase() + str.slice(1)
-      }
-    },
     data: function () {
       return {
         search: '',
         headers: [
-          {text: 'Temps', value: 'raceTime'},
+          {text: 'Heure d\'arrivée', value: 'raceTime'},
           {text: 'Dossard', value: 'bib'},
         ],
         pagination: {

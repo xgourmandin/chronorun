@@ -12,6 +12,10 @@ export default [
         component: () => lazyLoadView(import('./pages/chrono'))
     },
     {
+        path: '/finish',
+        component: () => lazyLoadView(import('./pages/finish'))
+    },
+    {
         path: '/results',
         component: () => lazyLoadView(import('./pages/results'))
     },

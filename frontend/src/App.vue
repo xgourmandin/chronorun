@@ -46,6 +46,7 @@ export default {
             { title: 'Courses', icon: 'flag', route: '/' },
             { title: 'Inscriptions', icon: 'edit', route: 'registration' },
             { title: 'Chronomètre', icon: 'schedule', route: 'chrono' },
+            { title: 'Arrivée', icon: 'how_to_reg', route: 'finish' },
             { title: 'Résultats', icon: 'assignment', route:'results' },
         ]
     }

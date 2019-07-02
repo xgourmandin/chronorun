@@ -1,4 +1,4 @@
-import {getSavedState, saveState} from './utils'
+import {saveState} from './utils'
 import api from '../utils/api'
 
 export default {
@@ -77,7 +77,7 @@ export default {
         commit('SET_RACE_START_DATE', new Date(Date.parse(result.raceStartDate)))
       })
     },
-    stopRace({ commit }, raceId) {
+    stopRace({ commit }) {
       commit('SET_RACE_START', false)
     },
     selectRace({commit, state}, raceId) {
