@@ -94,7 +94,7 @@ export default {
 }
 
 .chrono p {
-  font-size: 5rem;
+  font-size: 7rem;
   color: white;
 }
 

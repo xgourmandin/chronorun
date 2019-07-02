@@ -43,7 +43,7 @@ export default {
     return {
         drawer: null,
         items: [
-            { title: 'Courses', icon: 'settings', route: '/' },
+            { title: 'Courses', icon: 'flag', route: '/' },
             { title: 'Inscriptions', icon: 'edit', route: 'registration' },
             { title: 'Chronomètre', icon: 'schedule', route: 'chrono' },
             { title: 'Résultats', icon: 'assignment', route:'results' },

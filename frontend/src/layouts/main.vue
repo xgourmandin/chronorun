@@ -40,7 +40,7 @@
         data: () => ({
             drawer: null,
             items: [
-                { title: 'Courses', icon: 'dashboard', route: '/' },
+                { title: 'Courses', icon: 'flag', route: '/' },
                 { title: 'Inscriptions', icon: 'question_answer', route: 'registration' },
                 { title: 'Chronomètre', icon: 'question_answer', route: 'chrono' },
                 { title: 'Résultats', icon: 'question_answer', route:'results' },

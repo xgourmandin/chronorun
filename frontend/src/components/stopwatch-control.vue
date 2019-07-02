@@ -21,6 +21,7 @@ export default {
   },
   watch: {
     races: function(newRaces){
+      store.dispatch('selectRace', newRaces[0].id)
       this.raceSelected = newRaces[0]
     }
   },
@@ -37,6 +38,9 @@ export default {
     mark: function() {
       store.dispatch('mark')
     },
+    getRaceName(race) {
+      return race.name + ', '+race.distance+'Km'
+    }
   },
 }
 </script>
@@ -46,11 +50,9 @@ export default {
     <v-select
       v-model="raceSelected"
       :items="races"
-      item-text="name"
+      :item-text="getRaceName"
       item-value="id"
-      :hint="`${raceSelected.name}, ${raceSelected.distance}Km`"
       label="Sélectionner une course"
-      persistent-hint
       return-object
       @change="raceSelect"
     ></v-select>&nbsp;

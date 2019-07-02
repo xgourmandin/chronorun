@@ -2,6 +2,7 @@ package org.gx.chronorun.api;
 
 import org.gx.chronorun.model.Race;
 import org.gx.chronorun.service.race.RaceService;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,7 +19,7 @@ public class RaceController {
     }
 
     @PatchMapping("start")
-    public Race startRace(@RequestBody  Race raceToStart) {
-        return raceService.startRace(raceToStart);
+    public ResponseEntity<Race> startRace(@RequestBody  Race raceToStart) {
+        return ResponseEntity.ok(raceService.startRace(raceToStart));
     }
 }
