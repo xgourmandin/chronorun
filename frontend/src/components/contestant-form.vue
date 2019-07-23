@@ -1,5 +1,6 @@
 <script>
   import store from '../store'
+  import { mapState } from 'vuex'
   import EventBus from "../event-bus";
 
   export default {
@@ -11,6 +12,7 @@
         bib: '',
         category: '',
         sex: false,
+        race: null,
         club: '',
         errorMessage: '',
         alert: false,
@@ -27,9 +29,13 @@
           bib: this.bib,
           category: this.category,
           sex: this.sex,
+          race: this.race,
           club: this.club
         }
-      }
+      },
+      ...mapState({
+        races: (state) => state.race.races
+      }),
     },
     mounted() {
       EventBus.$on('edit_contestant', function (contestant) {
@@ -40,8 +46,10 @@
         this.bib = contestant.bib;
         this.category = contestant.category;
         this.sex = contestant.sex == 'F';
+        this.race = contestant.race
         this.club = contestant.club
       }.bind(this))
+      store.dispatch('loadRaces')
     },
     methods: {
       cleanForm() {
@@ -51,6 +59,7 @@
         this.bib = '';
         this.category = '';
         this.sex = false;
+        this.race = null
         this.club = ''
       },
       saveContestant: function () {
@@ -66,7 +75,14 @@
             this.errorMessage = error.message
           })
         }
-      }
+      },
+      getRaceName(race) {
+        return race.name + ', '+race.distance+'Km'
+      },
+      cancelEdit() {
+        this.editMode = false
+        this.cleanForm()
+      },
     }
   }
 </script>
@@ -117,13 +133,27 @@
         </template>
       </v-switch>
     </div>
+    <div class="halfpage">
+      <v-select
+        v-model="race"
+        :items="races"
+        :item-text="getRaceName"
+        item-value="id"
+        label="Sélectionner une course"
+        class="smallinput"
+      ></v-select>&nbsp;
+    </div>
+    <div class="halfpage">
     <v-text-field
       id="club"
       v-model="club"
       label="Club"
       name="club"
+      class="smallinput"
     />
+    </div>
     <v-btn color="success" type="submit">{{editMode ? 'Editer' : 'Inscrire'}}</v-btn>
+    <v-btn color="warning" @click="cancelEdit" v-if="editMode">Annuler</v-btn>
     <v-alert
       v-model="alert"
       dismissible

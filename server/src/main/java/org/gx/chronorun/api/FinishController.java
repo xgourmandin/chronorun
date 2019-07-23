@@ -4,6 +4,7 @@ import org.gx.chronorun.model.Result;
 import org.gx.chronorun.service.result.SaveResultService;
 import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -21,7 +22,7 @@ public class FinishController {
 
     @PostMapping
     @SendTo("/topic/result")
-    public void saveFinishResult(ResultDTO result) {
+    public void saveFinishResult(@RequestBody  ResultDTO result) {
         final Optional<Result> savedResult = saveResultService.saveResult(result);
         if(savedResult.isPresent()) {
             //TODO: Return result to Web Socket to notify every clients

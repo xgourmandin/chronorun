@@ -1,5 +1,6 @@
 <script>
 import { mapState } from 'vuex'
+import {padNumber} from "../utils/number-utils";
 
 export default {
   data() {
@@ -18,13 +19,13 @@ export default {
       else return 0
     },
     hour: function() {
-      return this.padNumber(this.milliToHour(this.elapsed))
+      return padNumber(this.milliToHour(this.elapsed))
     },
     minute: function() {
-      return this.padNumber(this.milliToMinute(this.elapsed))
+      return padNumber(this.milliToMinute(this.elapsed))
     },
     second: function() {
-      return this.padNumber(this.milliToSecond(this.elapsed))
+      return padNumber(this.milliToSecond(this.elapsed))
     },
   },
   watch: {
@@ -42,10 +43,6 @@ export default {
     }
   },
   methods: {
-    padNumber: function(number) {
-      if (number.toString().length === 2) return number.toString()
-      else return '0' + number.toString()
-    },
     milliToHour: function(milli) {
       return this.milliToChrono(milli, {
         divider: 1000 * 60 * 60,

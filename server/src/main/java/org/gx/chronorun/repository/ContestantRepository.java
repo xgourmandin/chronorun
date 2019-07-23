@@ -12,4 +12,5 @@ import java.util.Optional;
 public interface ContestantRepository extends MongoRepository<Contestant, String> {
     Optional<Contestant> findByBib(Integer bib);
 
+
 }

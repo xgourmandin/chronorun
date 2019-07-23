@@ -4,32 +4,22 @@
   export default {
     data() {
       return {
-        bib: '',
-        raceTime: '',
+        bib: ''
       }
     },
     computed: {
       form() {
         return {
-          bib: this.name,
+          bib: this.bib,
         }
       }
     },
     methods: {
       cleanForm() {
         this.bib = '';
-        this.raceTime = '';
       },
       saveResult: function () {
-        if (this.editMode) {
-          this.editMode = false;
-          let editedRace = this.form;
-          editedRace.id = this.editedId;
-          store.dispatch('editRace', editedRace)
-            .then( () => this.cleanForm())
-        } else {
-          store.dispatch('addRace', this.form).then( () => this.cleanForm())
-        }
+          store.dispatch('saveFinish', this.form.bib).then( () => this.cleanForm())
       }
     },
   }
@@ -37,8 +27,6 @@
 
 <template>
   <form @submit.prevent="saveResult">
-    {{raceTime}}
-    <v-spacer/>
     <v-text-field
       id="bib"
       label="Dossard"

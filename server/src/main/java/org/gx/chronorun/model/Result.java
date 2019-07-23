@@ -27,6 +27,6 @@ public class Result {
     }
 
     public Float getMeanPaceByKm() {
-        return getRaceDuration().get(ChronoUnit.MINUTES) / race.getDistance();
+        return getRaceDuration().toMinutes() / race.getDistance();
     }
 }

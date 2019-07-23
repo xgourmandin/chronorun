@@ -1,5 +1,6 @@
 <script>
   import {mapState} from 'vuex'
+  import store from '../store'
 
   export default {
     filters: {
@@ -11,42 +12,65 @@
       return {
         search: '',
         headers: [
+          {text: 'Dossard', value: 'contestant.bib'},
+          {text: 'Nom', value: 'contestant.name'},
+          {text: 'Catégorie', value: 'contestant.category'},
           {text: 'Temps', value: 'raceTime'},
-          {text: 'Dossard', value: 'bib'},
+          {text: 'Moyenne/Km', value: 'meanPaceByKm'},
+          {text: 'Club', value: 'contestant.club'},
         ],
-        pagination: {
-          rowsPerPage: 25
-        },
+        pagination: {'sortBy': 'raceTime', 'descending': false, 'rowsPerPage': -1}
       }
     },
     computed: {
       ...mapState( {
-        raceTimes: (state) => state.results.markedTimes,
+        raceResults: (state) => state.results.raceResults,
       }),
+    },
+    mounted(){
+      store.dispatch('loadResults')
     },
     methods: {
       timeFormat: function (millis) {
         let time = new Date(millis)
         return time.getHours() + "H" + time.getMinutes() + "M" + time.getSeconds() + "s"
       },
+      durationFormat: function(durationString) {
+        return durationString.substring(2)
+      }
     }
   }
 </script>
 
 <template>
   <v-card>
+    <v-card-title>
+      <v-spacer></v-spacer>
+      <v-text-field
+        v-model="search"
+        append-icon="search"
+        label="Chercher"
+        single-line
+        hide-details
+      ></v-text-field>
+    </v-card-title>
+
     <v-data-table
       :headers="headers"
-      :items="raceTimes"
+      :items="raceResults"
       :search="search"
       :pagination.sync="pagination"
     >
       <template v-slot:no-data>
-        Pas de temps disponible
+        Pas de résultats disponible
       </template>
       <template v-slot:items="props">
-        <td>{{ timeFormat(props.item.time) }}</td>
-        <td><v-text-field type="number"></v-text-field></td>
+        <td>{{props.item.contestant.bib}}</td>
+        <td>{{props.item.contestant.name}}</td>
+        <td>{{props.item.contestant.category}}</td>
+        <td>{{ durationFormat(props.item.raceDuration) }}</td>
+        <td>{{ props.item.meanPaceByKm }}</td>
+        <td>{{ props.item.contestant.club }}</td>
       </template>
     </v-data-table>
   </v-card>

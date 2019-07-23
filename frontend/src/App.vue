@@ -24,7 +24,7 @@
       </v-navigation-drawer>
       <v-toolbar color="indigo" dark fixed app>
           <v-toolbar-side-icon @click.stop="drawer = !drawer"></v-toolbar-side-icon>
-          <v-toolbar-title>Mazères Course Pédestre</v-toolbar-title>
+          <v-toolbar-title><v-img src="logo.png" width="50" contain /></v-toolbar-title>
       </v-toolbar>
       <v-content>
           <router-view></router-view>
@@ -64,4 +64,5 @@ export default {
     text-decoration: none;
     color: white;
   }
+
 </style>

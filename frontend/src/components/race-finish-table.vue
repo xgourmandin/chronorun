@@ -1,13 +1,13 @@
 <script>
   import {mapState} from 'vuex'
+  import {padNumber} from "../utils/number-utils";
 
   export default {
     data: function () {
       return {
         search: '',
         headers: [
-          {text: 'Heure d\'arrivée', value: 'raceTime'},
-          {text: 'Dossard', value: 'bib'},
+          {text: 'Heure d\'arrivée', value: 'raceTime'}
         ],
         pagination: {
           rowsPerPage: 25
@@ -22,7 +22,7 @@
     methods: {
       timeFormat: function (millis) {
         let time = new Date(millis)
-        return time.getHours() + "H" + time.getMinutes() + "M" + time.getSeconds() + "s"
+        return padNumber(time.getHours()) + "H" + padNumber(time.getMinutes()) + "M" + padNumber(time.getSeconds()) + "s"
       },
     }
   }
@@ -30,6 +30,7 @@
 
 <template>
   <v-card>
+    <v-card-title primary-title><b>Temps marqués disponibles : {{raceTimes.length}}</b></v-card-title>
     <v-data-table
       :headers="headers"
       :items="raceTimes"
@@ -40,8 +41,7 @@
         Pas de temps disponible
       </template>
       <template v-slot:items="props">
-        <td>{{ timeFormat(props.item.time) }}</td>
-        <td><v-text-field type="number"></v-text-field></td>
+        <td>{{ timeFormat(props.item) }}</td>
       </template>
     </v-data-table>
   </v-card>
