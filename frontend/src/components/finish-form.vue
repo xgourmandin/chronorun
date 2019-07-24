@@ -4,7 +4,9 @@
   export default {
     data() {
       return {
-        bib: ''
+        bib: '',
+        errorMessage: '',
+        alert: false
       }
     },
     computed: {
@@ -16,10 +18,15 @@
     },
     methods: {
       cleanForm() {
-        this.bib = '';
+        this.bib = ''
+        this.alert = false
       },
       saveResult: function () {
-          store.dispatch('saveFinish', this.form.bib).then( () => this.cleanForm())
+        store.dispatch('saveFinish', this.form.bib).then(() => this.cleanForm())
+          .catch(error => {
+            this.alert = true
+            this.errorMessage = error.message
+          })
       }
     },
   }
@@ -35,6 +42,9 @@
       :placeholder="'Numéro de dossard'"
     />
     <v-btn type="submit" color="success">Enregistrer</v-btn>
+    <v-alert v-model="alert" dismissible type="error">
+      {{ errorMessage }}
+    </v-alert>
   </form>
 </template>
 

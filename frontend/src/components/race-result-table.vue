@@ -1,8 +1,10 @@
 <script>
   import {mapState} from 'vuex'
   import store from '../store'
+  import ValidatingButton from "./validating-button";
 
   export default {
+    components: {ValidatingButton},
     filters: {
       capitalize: function (str) {
         return str.charAt(0).toUpperCase() + str.slice(1)
@@ -37,6 +39,9 @@
       },
       durationFormat: function(durationString) {
         return durationString.substring(2)
+      },
+      deleteResult: function (idTodelete) {
+        store.dispatch('deleteResult', idTodelete)
       }
     }
   }
@@ -71,6 +76,16 @@
         <td>{{ durationFormat(props.item.raceDuration) }}</td>
         <td>{{ props.item.meanPaceByKm }}</td>
         <td>{{ props.item.contestant.club }}</td>
+        <td class="justify-center layout px-0">
+          <v-icon
+            small
+            class="mr-2"
+            @click="editItem(props.item)"
+          >
+            edit
+          </v-icon>
+          <validating-button color="error" confirm-count="0" action-text="Supr" @click-validated="deleteResult(props.item.id)"></validating-button>
+        </td>
       </template>
     </v-data-table>
   </v-card>

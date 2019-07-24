@@ -2,8 +2,10 @@
   import {mapState} from 'vuex'
   import EventBus from "../event-bus"
   import store from '../store'
+  import ValidatingButton from "./validating-button";
 
   export default {
+    components: {ValidatingButton},
     data() {
       return {
         search: '',
@@ -76,17 +78,11 @@
           </v-icon>
           <v-icon
             small
-            class="mr-2"
-            @click="deleteItem(props.item)"
-          >
-            delete
-          </v-icon>
-          <v-icon
-            small
             @click="getResults(props.item)"
           >
             assignment
           </v-icon>
+          <validating-button color="error" confirm-count="2" action-text="Supr" @click-validated="deleteItem(props.item)"></validating-button>
         </td>
       </template>
     </v-data-table>
