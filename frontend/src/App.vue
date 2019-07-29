@@ -31,14 +31,18 @@
       </v-content>
       <v-footer color="indigo" app>
           <span class="white--text">&copy; 2019</span>
+        <v-spacer></v-spacer>
+        <realtime-server></realtime-server>
       </v-footer>
   </v-app>
 </template>
 
 <script>
 
+import RealtimeServer from "./components/realtime-server";
 export default {
   name: 'App',
+  components: {RealtimeServer},
   data () {
     return {
         drawer: null,

@@ -45,7 +45,7 @@
         this.birthYear = contestant.birthYear;
         this.bib = contestant.bib;
         this.category = contestant.category;
-        this.sex = contestant.sex == 'F';
+        this.sex = contestant.sex === 'F';
         this.race = contestant.race
         this.club = contestant.club
       }.bind(this))

@@ -22,13 +22,15 @@ public class FinishController {
 
     @PostMapping
     @SendTo("/topic/result")
-    public void saveFinishResult(@RequestBody  ResultDTO result) {
+    public Result saveFinishResult(@RequestBody  ResultDTO result) {
         final Optional<Result> savedResult = saveResultService.saveResult(result);
         if(savedResult.isPresent()) {
             //TODO: Return result to Web Socket to notify every clients
+            return savedResult.get();
         }
         else {
             //TODO: Manage errors
+            return null;
         }
     }
 }

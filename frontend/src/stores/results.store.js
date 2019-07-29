@@ -29,7 +29,9 @@ export default {
     },
     saveFinish({commit, state}, bib) {
       if (findResultByBib(state.raceResults, bib)) {
-        if (state.markedTimes.length == 0) {
+        return Promise.reject(Error("Ce dossard a déjà été enregistré"))
+      } else {
+        if (state.markedTimes.length === 0) {
           commit('MARK', new Date())
         }
         const raceTime = state.markedTimes[0]
@@ -37,8 +39,6 @@ export default {
           commit('FINISH_SAVED')
         })
         return Promise.resolve(true)
-      } else {
-        return Promise.reject(Error("Ce dossard a déjà été enregistré"))
       }
     },
     loadResults({commit}) {

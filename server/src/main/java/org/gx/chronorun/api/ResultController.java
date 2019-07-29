@@ -25,13 +25,15 @@ public class ResultController {
 
     @PatchMapping
     @SendTo("/topic/result")
-    public void updateResult(ResultDTO result) {
+    public Result updateResult(ResultDTO result) {
         final Optional<Result> savedResult = updateResultService.updateResult(result);
         if(savedResult.isPresent()) {
             //TODO: Return result to Web Socket to notify every clients
+            return savedResult.get();
         }
         else {
             //TODO: Manage errors
+            return null;
         }
     }
 
