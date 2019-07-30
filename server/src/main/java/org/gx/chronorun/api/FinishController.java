@@ -2,7 +2,7 @@ package org.gx.chronorun.api;
 
 import org.gx.chronorun.model.Result;
 import org.gx.chronorun.service.result.SaveResultService;
-import org.springframework.messaging.handler.annotation.SendTo;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -14,23 +14,23 @@ import java.util.Optional;
 @RequestMapping("/finish")
 public class FinishController {
 
-    private SaveResultService saveResultService;
+    private static final String WS_TOPIC = "/topic/result";
 
-    public FinishController(SaveResultService saveResultService) {
+    private SaveResultService saveResultService;
+    private SimpMessagingTemplate messagingTemplate;
+
+    public FinishController(SaveResultService saveResultService, SimpMessagingTemplate messagingTemplate) {
         this.saveResultService = saveResultService;
+        this.messagingTemplate = messagingTemplate;
     }
 
     @PostMapping
-    @SendTo("/topic/result")
     public Result saveFinishResult(@RequestBody  ResultDTO result) {
         final Optional<Result> savedResult = saveResultService.saveResult(result);
         if(savedResult.isPresent()) {
-            //TODO: Return result to Web Socket to notify every clients
+            messagingTemplate.convertAndSend(WS_TOPIC, savedResult.get());
             return savedResult.get();
         }
-        else {
-            //TODO: Manage errors
-            return null;
-        }
+        throw new ResultException("Server can't update the contestant result");
     }
 }
