@@ -9,12 +9,16 @@ import org.springframework.data.rest.core.annotation.RepositoryEventHandler;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 
 @RepositoryEventHandler
-public class ContestantEventHandler {
+public class ContestantEventHandler extends AbstractEventHandler {
 
-    private SimpMessagingTemplate messagingTemplate;
 
     public ContestantEventHandler(SimpMessagingTemplate messagingTemplate) {
-        this.messagingTemplate = messagingTemplate;
+        super(messagingTemplate);
+    }
+
+    @Override
+    protected String getTopic() {
+        return "/topic/contestant";
     }
 
     @HandleAfterCreate
@@ -31,15 +35,12 @@ public class ContestantEventHandler {
 
     @HandleAfterSave
     public void handleAfterSave(Contestant contestant) {
-        final ContestantMessage message = buildMessage(contestant, "SAVE");
+        final ContestantMessage message = buildMessage(contestant, "UPDATE");
         send(message);
-    }
-
-    private void send(ContestantMessage message) {
-        messagingTemplate.convertAndSend("/topic/contestant", message);
     }
 
     private ContestantMessage buildMessage(Contestant contestant, String type) {
         return ContestantMessage.builder().contestant(contestant).type(type).build();
     }
+
 }

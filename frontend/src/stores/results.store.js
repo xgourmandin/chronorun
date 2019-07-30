@@ -21,11 +21,15 @@ export default {
     },
     DELETE_RESULT(state, id) {
       state.raceResults.splice(state.raceResults.findIndex(r => r.id === id), 1)
+    },
+    ADD_RESULT(state, result) {
+      state.raceResults.push(result)
     }
   },
   actions: {
-    mark({commit}) {
-      commit('MARK', new Date())
+    mark() {
+      const raceTime = new Date()
+      api().post('/mark', {markTime: raceTime})
     },
     saveFinish({commit, state}, bib) {
       if (findResultByBib(state.raceResults, bib)) {
@@ -35,9 +39,7 @@ export default {
           commit('MARK', new Date())
         }
         const raceTime = state.markedTimes[0]
-        api().post('/finish', {bib: bib, raceTime: new Date(raceTime)}).then(() => {
-          commit('FINISH_SAVED')
-        })
+        api().post('/finish', {bib: bib, raceTime: new Date(raceTime)})
         return Promise.resolve(true)
       }
     },
@@ -51,12 +53,22 @@ export default {
       })
         .then(results => commit('SET_RESULTS', results))
     },
-    deleteResult({commit}, id) {
-      api().delete('/raceresult/'+id).then(() => commit('DELETE_RESULT', id))
+    deleteResult(store, id) {
+      api().delete('/raceresult/'+id)
+    },
+    webSocketCreateResult({commit}, result) {
+      commit('FINISH_SAVED')
+      commit('ADD_RESULT', result)
+    },
+    webSocketDeleteResult({commit}, result) {
+      commit('DELETE_RESULT', result.id)
+    },
+    webSocketMarkTime({commit}, raceTime) {
+      commit('MARK', raceTime)
     }
   }
 }
 
 function findResultByBib(raceResults, bib) {
-  return raceResults.find(r => r.contestant.bib === bib)
+  return raceResults.find(r => r.contestant.bib === Number(bib))
 }

@@ -40,31 +40,21 @@ export default {
     },
   },
   actions: {
-    addContestant({commit, state}, contestant) {
+    addContestant({state}, contestant) {
       if (!findContestantByBib(state.contestants, Number(contestant.bib))) {
         contestant = fillCategoryAndSex(contestant)
-        api().post("/contestant", contestant).then(c => {
-          delete c.data._links
-          commit('ADD_CONTESTANT', c.data)
-        })
+        api().post("/contestant", contestant)
         return Promise.resolve(true)
       } else {
         return Promise.reject(Error("Le dossard " + contestant.bib + " existe déjà"))
       }
     },
-    editContestant({commit}, contestant) {
+    editContestant(store, contestant) {
       contestant = fillCategoryAndSex(contestant)
-      api().patch("/contestant/" + contestant.id, contestant).then(c => {
-          let result = c.data
-          delete result._links
-          commit('REPLACE_CONTESTANT', result)
-        }
-      )
+      api().patch("/contestant/" + contestant.id, contestant)
     },
-    deleteContestant({commit}, contestant) {
-      api().delete("/contestant/" + contestant.id).then(() => {
-        commit('DELETE_CONTESTANT', contestant)
-      })
+    deleteContestant(store, contestant) {
+      api().delete("/contestant/" + contestant.id)
     },
     loadContestants({commit}) {
       api().get("/contestant").then(r => {
@@ -76,6 +66,15 @@ export default {
       })
         .then(contestants => commit('SET_CONTESTANTS', contestants))
     },
+    webSocketCreateContestant({commit}, contestant) {
+      commit('ADD_CONTESTANT', contestant)
+    },
+    webSocketUpdateContestant({commit}, contestant) {
+      commit('REPLACE_CONTESTANT', contestant)
+    },
+    webSocketDeleteContestant({commit}, contestant) {
+      commit('DELETE_CONTESTANT', contestant)
+    }
   }
 }
 

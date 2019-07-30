@@ -8,6 +8,7 @@
 <script>
   import SockJS from "sockjs-client";
   import Stomp from "webstomp-client";
+  import store from '../store'
 
   export default {
     name: "realtime-server",
@@ -26,8 +27,26 @@
             () => {
               this.connected = true;
               this.stompClient.subscribe("/topic/result", tick => {
-                this.received_messages.push(JSON.parse(tick.body).content);
+                const resultMessage = JSON.parse(tick.body)
+                if (resultMessage.type === 'CREATE') {
+                  store.dispatch('webSocketCreateResult', resultMessage.result)
+                } else if (resultMessage.type === 'DELETE') {
+                  store.dispatch('webSocketDeleteResult', resultMessage.result)
+                }
               });
+              this.stompClient.subscribe("/topic/mark", tick => {
+                store.dispatch("webSocketMarkTime", new Date(JSON.parse(tick.body).markTime))
+              })
+              this.stompClient.subscribe("/topic/contestant", tick => {
+                const contestantMessage = JSON.parse(tick.body)
+                if (contestantMessage.type === "CREATE") {
+                  store.dispatch("webSocketCreateContestant", contestantMessage.contestant)
+                } else if (contestantMessage.type === "UPDATE") {
+                  store.dispatch("webSocketUpdateContestant", contestantMessage.contestant)
+                } else if (contestantMessage.type === "DELETE") {
+                  store.dispatch("webSocketDeleteContestant", contestantMessage.contestant)
+                }
+              })
             },
             () => {
               this.connected = false;

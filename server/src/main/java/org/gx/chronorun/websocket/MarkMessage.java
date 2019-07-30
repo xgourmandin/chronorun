@@ -7,7 +7,7 @@ import java.time.LocalDateTime;
 
 @Data
 @Builder
-public class MarkMessage {
+public class MarkMessage implements WebSocketMessage{
 
     public LocalDateTime markTime;
 }

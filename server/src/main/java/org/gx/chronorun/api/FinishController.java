@@ -2,6 +2,7 @@ package org.gx.chronorun.api;
 
 import org.gx.chronorun.model.Result;
 import org.gx.chronorun.service.result.SaveResultService;
+import org.gx.chronorun.websocket.ResultMessage;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -28,7 +29,7 @@ public class FinishController {
     public Result saveFinishResult(@RequestBody  ResultDTO result) {
         final Optional<Result> savedResult = saveResultService.saveResult(result);
         if(savedResult.isPresent()) {
-            messagingTemplate.convertAndSend(WS_TOPIC, savedResult.get());
+            messagingTemplate.convertAndSend(WS_TOPIC, ResultMessage.builder().result(savedResult.get()).type("CREATE").build());
             return savedResult.get();
         }
         throw new ResultException("Server can't update the contestant result");

@@ -6,7 +6,7 @@ import org.gx.chronorun.model.Result;
 
 @Data
 @Builder
-public class ResultMessage {
+public class ResultMessage implements WebSocketMessage {
 
     private String type;
 

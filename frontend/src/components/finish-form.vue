@@ -29,6 +29,9 @@
           })
       }
     },
+    mounted(){
+      store.dispatch('loadResults')
+    },
   }
 </script>
 
