@@ -5,6 +5,7 @@ import org.gx.chronorun.service.result.UpdateResultService;
 import org.gx.chronorun.websocket.ResultMessage;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -25,7 +26,7 @@ public class ResultController {
     }
 
     @PatchMapping
-    public Result updateResult(ResultDTO result) {
+    public Result updateResult(@RequestBody ResultUpdateDto result) {
         final Optional<Result> savedResult = updateResultService.updateResult(result);
         if(savedResult.isPresent()) {
             messagingTemplate.convertAndSend(WS_TOPIC, ResultMessage.builder().result(savedResult.get()).type("UPDATE").build());

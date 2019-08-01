@@ -44,7 +44,7 @@ export default {
       }
     },
     loadResults({commit}) {
-      api().get('/raceresult').then(r => {
+      api().get('/raceresult?sort=raceTime').then(r => {
         let results = r.data._embedded.result
         return results.map(c => {
           delete c._links

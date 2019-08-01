@@ -2,6 +2,7 @@
   import {mapState} from 'vuex'
   import store from '../store'
   import ValidatingButton from "./validating-button";
+  import EventBus from '../event-bus'
 
   export default {
     components: {ValidatingButton},
@@ -21,7 +22,7 @@
           {text: 'Moyenne/Km', value: 'meanPaceByKm'},
           {text: 'Club', value: 'contestant.club'},
         ],
-        pagination: {'sortBy': 'raceTime', 'descending': false, 'rowsPerPage': -1}
+        pagination: {'sortBy': 'raceTime', 'descending': false, 'rowsPerPage': 25}
       }
     },
     computed: {
@@ -42,6 +43,9 @@
       },
       deleteResult: function (idTodelete) {
         store.dispatch('deleteResult', idTodelete)
+      },
+      editItem: function (result) {
+        EventBus.$emit('edit_result', result)
       }
     }
   }
