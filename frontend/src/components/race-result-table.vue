@@ -46,6 +46,24 @@
       },
       editItem: function (result) {
         EventBus.$emit('edit_result', result)
+      },
+      customSort: function (items, index, isDesc) {
+        items.sort((a, b) => {
+          if (index === 'raceTime') {
+            if (a.raceTime === null) return 1
+            if (b.raceTime === null) return -1
+            return this.compareString(a[index], b[index], isDesc)
+          }
+          return this.compareString(a[index], b[index], isDesc)
+        })
+        return items
+      },
+      compareString(a, b, isDesc) {
+        if (isDesc) {
+          return b.localeCompare(a)
+        }else {
+          return a.localeCompare(b)
+        }
       }
     }
   }
@@ -69,6 +87,7 @@
       :items="raceResults"
       :search="search"
       :pagination.sync="pagination"
+      :custom-sort="customSort"
     >
       <template v-slot:no-data>
         Pas de résultats disponible
@@ -77,8 +96,10 @@
         <td>{{props.item.contestant.bib}}</td>
         <td>{{props.item.contestant.name}}</td>
         <td>{{props.item.contestant.category}}</td>
-        <td>{{ durationFormat(props.item.raceDuration) }}</td>
-        <td>{{ props.item.meanPaceByKm }}</td>
+        <td v-if="props.item.contestant.gaveUp">Abandon</td>
+        <td v-else>{{ durationFormat(props.item.raceDuration) }}</td>
+        <td v-if="props.item.contestant.gaveUp">N/A</td>
+        <td v-else>{{ props.item.meanPaceByKm }}</td>
         <td>{{ props.item.contestant.club }}</td>
         <td class="justify-center layout px-0">
           <v-icon

@@ -34,4 +34,13 @@ public class FinishController {
         }
         throw new ResultException("Server can't update the contestant result");
     }
+
+    @PostMapping("/giveup")
+    public void recordGiveUp(@RequestBody Integer bib) {
+        final Optional<Result> savedResult = saveResultService.recordGiveUp(bib);
+        if(savedResult.isPresent()) {
+            messagingTemplate.convertAndSend(WS_TOPIC, ResultMessage.builder().result(savedResult.get()).type("CREATE").build());
+        }
+        throw new ResultException("Server can't update the contestant result");
+    }
 }

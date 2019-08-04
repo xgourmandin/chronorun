@@ -63,6 +63,9 @@ export default {
     updateResult(store, result) {
       api().patch('/result', result)
     },
+    recordGiveUp(store, bib) {
+      api().post('/finish/giveup', bib)
+    },
     webSocketCreateResult({commit}, result) {
       commit('FINISH_SAVED')
       commit('ADD_RESULT', result)

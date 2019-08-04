@@ -33,8 +33,9 @@ public class UpdateResultService {
     }
 
     private Result updateBaseResult(Result r, ResultUpdateDto resultUpdate, Contestant c) {
+        c.setGaveUp(r.getContestant().getGaveUp());
         r.setContestant(c);
-        if (resultUpdate.getAdjustParam() != null) {
+        if (resultUpdate.getAdjustParam() != null && !c.getGaveUp()) {
             r = adjustRaceTime(r, resultUpdate.getAdjustParam());
         }
         return r;

@@ -77,7 +77,9 @@ export default {
         commit('SET_RACE_START_DATE', new Date(Date.parse(result.raceStartDate)))
       })
     },
-    stopRace({ commit }) {
+    stopRace({ commit }, race) {
+      race.raceStartDate = null
+      api().patch('/race/'+race.id, race)
       commit('SET_RACE_START', false)
     },
     selectRace({commit, state}, raceId) {

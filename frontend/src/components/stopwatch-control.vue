@@ -30,7 +30,7 @@ export default {
       store.dispatch('startRace', this.raceSelected.id)
     },
     endRace: function() {
-      store.dispatch('stopRace', this.raceSelected.id)
+      store.dispatch('stopRace', this.raceSelected)
     },
     raceSelect: function() {
       store.dispatch('selectRace', this.raceSelected.id)

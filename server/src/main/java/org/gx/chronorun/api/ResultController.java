@@ -4,10 +4,7 @@ import org.gx.chronorun.model.Result;
 import org.gx.chronorun.service.result.UpdateResultService;
 import org.gx.chronorun.websocket.ResultMessage;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
-import org.springframework.web.bind.annotation.PatchMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
 

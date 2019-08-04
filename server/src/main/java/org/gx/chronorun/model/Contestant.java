@@ -25,4 +25,6 @@ public class Contestant {
 
     private String race;
 
+    private Boolean gaveUp;
+
 }
