@@ -1,6 +1,8 @@
 package org.gx.chronorun.service.result;
 
 import org.gx.chronorun.api.ResultDTO;
+import org.gx.chronorun.api.ResultUpdateDto;
+import org.gx.chronorun.api.TimeAdjust;
 import org.gx.chronorun.model.Contestant;
 import org.gx.chronorun.model.Result;
 import org.gx.chronorun.repository.ResultRepository;
@@ -48,10 +50,14 @@ public class UpdateResultTest {
 
     @Test
     public void testUpdateResult() {
-        ResultDTO resultDTO = new ResultDTO();
+        ResultUpdateDto resultDTO = new ResultUpdateDto();
         resultDTO.setBib(1);
         final LocalDateTime raceTime = LocalDateTime.now();
-        resultDTO.setRaceTime(raceTime);
+        TimeAdjust timeadjust = new TimeAdjust();
+        timeadjust.setAmount(5l);
+        timeadjust.setUnit("secondes");
+        timeadjust.setOperator("+");
+        resultDTO.setAdjustParam(timeadjust);
         updateResultService.updateResult(resultDTO);
         ArgumentCaptor<Result> argCaptor = ArgumentCaptor.forClass(Result.class);
         verify(resultRepository).save(argCaptor.capture());

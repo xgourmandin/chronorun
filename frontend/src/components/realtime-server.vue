@@ -33,6 +33,9 @@
                 } else if (resultMessage.type === 'DELETE') {
                   store.dispatch('webSocketDeleteResult', resultMessage.result)
                 }
+                else if (resultMessage.type === 'UPDATE') {
+                  store.dispatch('webSocketUpdateResult', resultMessage.result)
+                }
               });
               this.stompClient.subscribe("/topic/mark", tick => {
                 store.dispatch("webSocketMarkTime", new Date(JSON.parse(tick.body).markTime))

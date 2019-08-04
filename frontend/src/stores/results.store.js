@@ -24,6 +24,10 @@ export default {
     },
     ADD_RESULT(state, result) {
       state.raceResults.push(result)
+    },
+    UPDATE_RESULT(state, result) {
+      state.raceResults.splice(state.raceResults.findIndex(r => r.id === result.id), 1)
+      state.raceResults.push(result)
     }
   },
   actions: {
@@ -56,12 +60,18 @@ export default {
     deleteResult(store, id) {
       api().delete('/raceresult/'+id)
     },
+    updateResult(store, result) {
+      api().patch('/result', result)
+    },
     webSocketCreateResult({commit}, result) {
       commit('FINISH_SAVED')
       commit('ADD_RESULT', result)
     },
     webSocketDeleteResult({commit}, result) {
       commit('DELETE_RESULT', result.id)
+    },
+    webSocketUpdateResult({commit}, result) {
+      commit('UPDATE_RESULT', result)
     },
     webSocketMarkTime({commit}, raceTime) {
       commit('MARK', raceTime)

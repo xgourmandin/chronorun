@@ -6,16 +6,16 @@
         v-model="adjustOperator"
         :items="adjustOperators"
         class="operatorSelect inline"
-        :disabled="$attrs.disabled"
+        :disabled="disabled"
       @change="changeOperator">
       </v-select>
-      <v-text-field v-model="timeAmount" type="number" class="time-text inline" @change="changeAmount" :disabled="$attrs.disabled"></v-text-field>
+      <v-text-field v-model="timeAmount" type="number" class="time-text inline" @change="changeAmount" :disabled="disabled"></v-text-field>
       <v-select
         v-model="timeUnit"
         :items="timeUnits"
         class="operatorSelect inline"
       @change="changeUnit"
-        :disabled="$attrs.disabled">
+        :disabled="disabled">
       </v-select>
   </div>
 </template>
@@ -23,19 +23,27 @@
 <script>
   export default {
     name: "time-adjuster",
+    props: ['disabled'],
     data() {
       return {
         adjustOperator: '-',
-        adjustOperators: ['+', '-'],
+        adjustOperators: ['-', '+'],
         timeAmount: null,
         timeUnit: 'secondes',
         timeUnits: ['secondes', 'minutes'],
-        adjustParams: {operator: '+', amount: null, unit: 'secondes'}
+        adjustParams: {operator: '-', amount: null, unit: 'secondes'}
       }
     },
     model: {
       prop: 'adjustParams',
       event: 'change'
+    },
+    watch: {
+      disabled: function (newVal) {
+        if (newVal) {
+          this.cleanForm()
+        }
+      }
     },
     methods: {
       changeOperator: function () {
@@ -49,6 +57,11 @@
       changeUnit: function () {
         this.adjustParams.unit = this.timeUnit
         this.$emit('change', this.adjustParams)
+      },
+      cleanForm() {
+        this.adjustOperator = '-'
+        this.timeAmount = null
+        this.timeUnit = 'secondes'
       }
     }
   }

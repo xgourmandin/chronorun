@@ -24,17 +24,12 @@ public class UpdateResultService {
     }
 
     public Optional<Result> updateResult(ResultUpdateDto resultUpdate) {
-        return contestantRepository.findByBib(resultUpdate.getBib()).map(c -> {
-            Optional<Result> savedResult = resultRepository.findById(resultUpdate.getResultId()).map(r -> {
-                Result updatedResult = updateBaseResult(r, resultUpdate, c);
-                return resultRepository.save(updatedResult);
-            });
-            if (savedResult.isPresent()) {
-                return savedResult.get();
-            } else {
-                return null;
-            }
-        });
+        return contestantRepository.findByBib(resultUpdate.getBib()).map(c ->
+                resultRepository.findById(resultUpdate.getResultId()).map(r -> {
+                    Result updatedResult = updateBaseResult(r, resultUpdate, c);
+                    return resultRepository.save(updatedResult);
+                }).orElse(null)
+        );
     }
 
     private Result updateBaseResult(Result r, ResultUpdateDto resultUpdate, Contestant c) {
