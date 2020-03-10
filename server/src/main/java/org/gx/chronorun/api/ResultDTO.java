@@ -1,6 +1,7 @@
 package org.gx.chronorun.api;
 
 import lombok.Data;
+import org.gx.chronorun.model.TimeMark;
 
 import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
@@ -12,6 +13,6 @@ public class ResultDTO {
     private Integer bib;
 
     @NotNull
-    private LocalDateTime raceTime;
+    private TimeMark mark;
 
 }

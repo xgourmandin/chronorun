@@ -10,6 +10,7 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/result")
+@CrossOrigin
 public class ResultController {
 
     private static final String WS_TOPIC = "/topic/result";

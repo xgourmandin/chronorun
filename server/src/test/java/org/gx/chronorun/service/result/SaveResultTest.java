@@ -4,9 +4,11 @@ import org.gx.chronorun.api.ResultDTO;
 import org.gx.chronorun.model.Contestant;
 import org.gx.chronorun.model.Race;
 import org.gx.chronorun.model.Result;
+import org.gx.chronorun.model.TimeMark;
 import org.gx.chronorun.repository.ContestantRepository;
 import org.gx.chronorun.repository.RaceRepository;
 import org.gx.chronorun.repository.ResultRepository;
+import org.gx.chronorun.repository.TimeMarkRepository;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -42,6 +44,9 @@ public class SaveResultTest {
     @MockBean
     private ContestantRepository contestantRepository;
 
+    @MockBean
+    private TimeMarkRepository timeMarkRepository;
+
     @Autowired
     private SaveResultService saveResultService;
 
@@ -68,7 +73,7 @@ public class SaveResultTest {
     public void testSaveResult() {
         ResultDTO resultDTO = new ResultDTO();
         resultDTO.setBib(1);
-        resultDTO.setRaceTime(LocalDateTime.now());
+        resultDTO.setMark(TimeMark.builder().mark(LocalDateTime.now()).build());
         ArgumentCaptor<Result> argCaptor = ArgumentCaptor.forClass(Result.class);
         saveResultService.saveResult(resultDTO);
         verify(resultRepository).save(argCaptor.capture());

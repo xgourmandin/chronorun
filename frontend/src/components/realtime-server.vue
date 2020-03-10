@@ -37,9 +37,6 @@
                   store.dispatch('webSocketUpdateResult', resultMessage.result)
                 }
               });
-              this.stompClient.subscribe("/topic/mark", tick => {
-                store.dispatch("webSocketMarkTime", new Date(JSON.parse(tick.body).markTime))
-              })
               this.stompClient.subscribe("/topic/contestant", tick => {
                 const contestantMessage = JSON.parse(tick.body)
                 if (contestantMessage.type === "CREATE") {
@@ -48,6 +45,14 @@
                   store.dispatch("webSocketUpdateContestant", contestantMessage.contestant)
                 } else if (contestantMessage.type === "DELETE") {
                   store.dispatch("webSocketDeleteContestant", contestantMessage.contestant)
+                }
+              })
+              this.stompClient.subscribe("/topic/mark", tick => {
+                const markMessage = JSON.parse(tick.body)
+                if (markMessage.type === "CREATE") {
+                  store.dispatch("webSocketCreateMark", markMessage.mark)
+                } else if (markMessage.type === "DELETE") {
+                  store.dispatch("webSocketDeleteMark", markMessage.mark)
                 }
               })
             },
@@ -99,11 +104,11 @@
   .connected {
     background-color: #388E3C;
     box-shadow: 0 0 8px #66BB6A, inset 0 0 8px #66BB6A;
-    animation: pulse 2s linear 1s infinite;
+    animation: pulse 0.5s linear 0.2s infinite;
   }
 
   .disconnected {
     background-color: #d32f2f;
-    animation: flash 0.5s steps(1) infinite;
+    animation: flash 250ms steps(1) infinite;
   }
 </style>

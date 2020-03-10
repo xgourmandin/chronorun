@@ -10,12 +10,13 @@
           type="number"
           name="bib"
           class="smallinput"
+          :disabled="!editMode"
         />
       </div>
 
       <time-adjuster class="halfpage" v-model="adjustParam" :disabled="!editMode"></time-adjuster>
 
-      <validating-button color="success" type="submit" action-text="Editer" @click-validated="saveResult" confirm-count="0"></validating-button>
+      <validating-button color="success" type="submit" :disabled="!editMode" action-text="Editer" @click-validated="saveResult" confirm-count="0"></validating-button>
       <v-btn color="warning" @click="cancelEdit" v-if="editMode">Annuler</v-btn>
     </form>
 </template>

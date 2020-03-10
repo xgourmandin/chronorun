@@ -32,7 +32,7 @@ public class FinishController {
             messagingTemplate.convertAndSend(WS_TOPIC, ResultMessage.builder().result(savedResult.get()).type("CREATE").build());
             return savedResult.get();
         }
-        throw new ResultException("Server can't update the contestant result");
+        throw new ResultException("Server can't save the contestant result");
     }
 
     @PostMapping("/giveup")

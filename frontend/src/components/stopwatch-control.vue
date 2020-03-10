@@ -19,6 +19,12 @@ export default {
   mounted() {
     store.dispatch('loadRaces')
   },
+  created() {
+    window.addEventListener('keydown', this.onkey)
+  },
+  beforeDestroy() {
+    window.removeEventListener('keydown', this.onkey)
+  },
   watch: {
     races: function(newRaces){
       store.dispatch('selectRace', newRaces[0].id)
@@ -40,6 +46,11 @@ export default {
     },
     getRaceName(race) {
       return race.name + ', '+race.distance+'Km'
+    },
+    onkey: function(e) {
+      if (e.code == 'Space') {
+        this.mark()
+      }
     }
   },
 }
@@ -64,7 +75,7 @@ export default {
     <br />
     <v-divider></v-divider>
     <br />
-    <v-btn color="error" class="bigbutton" :disabled="!raceStarted" @click="mark"
+    <v-btn color="error" class="bigbutton" :disabled="!raceStarted" @click="mark" v-on:keypress.space="mark"
       >Mark !</v-btn
     >
   </div>

@@ -2,9 +2,11 @@ package org.gx.chronorun.conf;
 
 import org.gx.chronorun.events.ContestantEventHandler;
 import org.gx.chronorun.events.ResultEventHandler;
+import org.gx.chronorun.events.TimeMarkEventHandler;
 import org.gx.chronorun.model.Contestant;
 import org.gx.chronorun.model.Race;
 import org.gx.chronorun.model.Result;
+import org.gx.chronorun.model.TimeMark;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.rest.core.config.RepositoryRestConfiguration;
@@ -16,7 +18,7 @@ public class RestRepositoryConfig implements RepositoryRestConfigurer {
 
     @Override
     public void configureRepositoryRestConfiguration(RepositoryRestConfiguration config) {
-        config.exposeIdsFor(Contestant.class, Race.class, Result.class);
+        config.exposeIdsFor(Contestant.class, Race.class, Result.class, TimeMark.class);
         config.setDefaultPageSize(Integer.MAX_VALUE);
     }
 
@@ -28,6 +30,11 @@ public class RestRepositoryConfig implements RepositoryRestConfigurer {
     @Bean
     public ResultEventHandler resultEventHandler(SimpMessagingTemplate template) {
         return new ResultEventHandler(template);
+    }
+
+    @Bean
+    public TimeMarkEventHandler markEventHandler(SimpMessagingTemplate template) {
+        return new TimeMarkEventHandler(template);
     }
 
 }
