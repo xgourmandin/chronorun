@@ -56,7 +56,7 @@
     />
     <v-btn type="submit" color="success" :disabled="bib == ''">Enregistrer</v-btn>
     <v-btn absolute right @click.stop="giveUpDialog = true">
-      <v-icon>flag</v-icon>Abandon
+      <v-icon>mdi-flag</v-icon> Abandon
     </v-btn>
     <v-alert v-model="alert" dismissible type="error">
       {{ errorMessage }}

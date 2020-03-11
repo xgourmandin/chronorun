@@ -4,12 +4,14 @@
   import EventBus from "../event-bus";
 
   export default {
+    components:{
 
+    },
     data() {
       return {
         name: '',
         birthYear: 19,
-        bib: '',
+        bib: null,
         category: '',
         sex: false,
         race: null,
@@ -17,7 +19,9 @@
         errorMessage: '',
         alert: false,
         editMode: false,
-        editedId: null
+        editedId: null,
+        importDialog: false,
+        csvFile: null
       }
 
     },
@@ -36,6 +40,9 @@
       ...mapState({
         races: (state) => state.race.races
       }),
+      valid() {
+        return this.name != "" && this.birthYear >= 1930 && this.bib !=null && this.bib !='' && this.race != null
+      }
     },
     mounted() {
       EventBus.$on('edit_contestant', function (contestant) {
@@ -83,6 +90,9 @@
         this.editMode = false
         this.cleanForm()
       },
+      importCsv() {
+
+      }
     }
   }
 </script>
@@ -152,7 +162,7 @@
       class="smallinput"
     />
     </div>
-    <v-btn color="success" type="submit">{{editMode ? 'Editer' : 'Inscrire'}}</v-btn>
+    <v-btn color="success" type="submit" :disabled="!valid">{{editMode ? 'Editer' : 'Inscrire'}}</v-btn>
     <v-btn color="warning" @click="cancelEdit" v-if="editMode">Annuler</v-btn>
     <v-alert
       v-model="alert"
@@ -161,6 +171,20 @@
     >
       {{ errorMessage }}
     </v-alert>
+    <v-btn absolute right @click.stop="importDialog = true">
+      Importer
+    </v-btn>
+    <v-dialog
+      v-model="importDialog" max-width="50%">
+      <v-card>
+        <v-card-title>
+          <span class="headline">Importer CSV</span>
+        </v-card-title>
+        <v-card-text>
+          <v-file-input chips class="smallinput" required label="Fichier CSV" v-model="csvFile"></v-file-input>
+        </v-card-text>
+      </v-card>
+    </v-dialog>
   </form>
 </template>
 

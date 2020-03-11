@@ -47,7 +47,11 @@
         } else {
           store.dispatch('addRace', this.form).then( () => this.cleanForm())
         }
-      }
+      },
+      cancelEdit() {
+        this.editMode = false
+        this.cleanForm()
+      },
     },
   }
 </script>
@@ -76,7 +80,9 @@
       v-model="raceDate"
       name="racedate"
     />
-    <v-btn type="submit" color="success">{{editMode ? 'Editer' : 'Créer'}}</v-btn>
+    <v-btn type="submit" color="success" :disabled="name == ''">{{editMode ? 'Editer' : 'Créer'}}</v-btn>
+    <v-btn color="warning" @click="cancelEdit" v-if="editMode">Annuler</v-btn>
+
   </form>
 </template>
 

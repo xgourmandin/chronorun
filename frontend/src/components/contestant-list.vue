@@ -15,10 +15,10 @@
           {text: 'Naissance', value: 'birthYear'},
           {text: 'Catégorie', value: 'category'},
           {text: 'Sexe', value: 'sex'},
-          {text: 'Actions', value: 'act', sortable: false}
+          {text: 'Actions', value: 'actions', sortable: false, width: "15em"}
         ],
         pagination: {
-          rowsPerPage: 10
+          itemsPerPage: 15
         },
       }
     },
@@ -48,7 +48,7 @@
       <v-spacer></v-spacer>
       <v-text-field
         v-model="search"
-        append-icon="search"
+        append-icon="mdi-magnify"
         label="Chercher"
         single-line
         hide-details
@@ -59,27 +59,20 @@
       :headers="headers"
       :items="contestants"
       :search="search"
-      :pagination.sync="pagination"
+      :options="pagination"
     >
       <template v-slot:no-data>
         Pas encore d'inscrit
       </template>
-      <template v-slot:items="props">
-        <td>{{ props.item.bib }}</td>
-        <td>{{ props.item.name}}</td>
-        <td>{{ props.item.birthYear }}</td>
-        <td>{{ props.item.category }}</td>
-        <td>{{ props.item.sex }}</td>
-        <td class="justify-center layout px-0">
+      <template v-slot:item.actions="{ item }">
           <v-icon
             small
             class="mr-2"
-            @click="editItem(props.item)"
+            @click="editItem(item)"
           >
-            edit
+            mdi-pencil
           </v-icon>
-          <validating-button color="error" confirm-count="0" action-text="Supr" @click-validated="deleteItem(props.item)"></validating-button>
-        </td>
+          <validating-button color="error" confirm-count="0" action-text="Supr" @click-validated="deleteItem(item)"></validating-button>
       </template>
     </v-data-table>
   </v-card>

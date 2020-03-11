@@ -9,11 +9,11 @@
       return {
         search: '',
         headers: [
-          {text: 'Heure d\'arrivée', value: 'raceTime'},
-          {text: 'Actions', value: 'act', sortable: false}
+          {text: 'Heure d\'arrivée', value: 'mark'},
+          {text: 'Actions', value: 'actions', sortable: false}
         ],
         pagination: {
-          rowsPerPage: 25
+          itemsPerPage: 15
         },
       }
     },
@@ -37,16 +37,13 @@
       :headers="headers"
       :items="raceTimes"
       :search="search"
-      :pagination.sync="pagination"
+      :options="pagination"
     >
       <template v-slot:no-data>
         Pas de temps disponible
       </template>
-      <template v-slot:items="props">
-        <td>{{ props.item.mark }}</td>
-        <td>
-          <validating-button color="error" confirm-count="0" action-text="Supr" @click-validated="deleteItem(props.item)"></validating-button>
-        </td>
+      <template v-slot:item.actions="{ item }">
+        <validating-button color="error" confirm-count="0" action-text="Supr" @click-validated="deleteItem(item)"></validating-button>
       </template>
     </v-data-table>
   </v-card>

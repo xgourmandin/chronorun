@@ -67,9 +67,12 @@ export default {
       return-object
       @change="raceSelect"
     ></v-select>&nbsp;
-    <v-btn color="success" :disabled="raceStarted" @click="startRace"
-      >Top d&eacute;part</v-btn>
-    -
+    <v-btn color="success" :disabled="raceStarted" @click="startRace" >Top d&eacute;part</v-btn>
+    <v-divider
+      class="mx-4"
+      vertical
+      light
+    ></v-divider>
     <validating-button color="warning" :disabled="!raceStarted" @click-validated="endRace" confirm-count="2" action-text="Stopper la course"/>
     <br />
     <br />
@@ -90,6 +93,6 @@ export default {
 
 .bigbutton {
   width: 50%;
-  height: 10rem;
+  height: 10rem !important;
 }
 </style>

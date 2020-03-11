@@ -93,4 +93,8 @@
     width: 80%;
   }
 
+  button {
+    margin-right: 1em;
+  }
+
 </style>

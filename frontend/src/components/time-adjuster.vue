@@ -76,9 +76,11 @@
 
   .time-text {
     width: 15%;
+    color: white;
   }
 
   .operatorSelect {
-    width: 2em;
+    width: 10em;
+    color: white;
   }
 </style>

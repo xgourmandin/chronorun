@@ -19,6 +19,10 @@ export default [
         path: '/results',
         component: () => lazyLoadView(import('./pages/results'))
     },
+  {
+        path: '/display',
+        component: () => lazyLoadView(import('./pages/results-display'))
+    },
 ]
 
 function lazyLoadView(AsyncView) {

@@ -13,10 +13,10 @@
           {text: 'Nom', value: 'name'},
           {text: 'Distance', value: 'distance'},
           {text: 'Date', value: 'raceDate'},
-          {text: 'Actions', value: 'act', sortable: false}
+          {text: 'Actions', value: 'actions', sortable: false, filterable: false, width: "20em"}
         ],
         pagination: {
-          rowsPerPage: 10
+          itemsPerPage: 10
         },
       }
     },
@@ -36,7 +36,7 @@
         store.dispatch('deleteRace', race)
       },
       getResults: function (race) {
-        window.open("api/race/print/"+race.id, "_blank")
+        window.open("api/race/print/" + race.id, "_blank")
       }
     }
   }
@@ -48,7 +48,7 @@
       <v-spacer></v-spacer>
       <v-text-field
         v-model="search"
-        append-icon="search"
+        append-icon="mdi-magnify"
         label="Chercher"
         single-line
         hide-details
@@ -59,32 +59,36 @@
       :headers="headers"
       :items="races"
       :search="search"
-      :pagination.sync="pagination"
+      :options="pagination"
     >
       <template v-slot:no-data>
         Pas de course enregistré
       </template>
-      <template v-slot:items="props">
-        <td>{{ props.item.name }}</td>
-        <td>{{ props.item.distance }}</td>
-        <td>{{ props.item.raceDate }}</td>
-        <td class="justify-center layout px-0">
-          <v-icon
-            small
-            class="mr-2"
-            @click="editItem(props.item)"
-          >
-            edit
-          </v-icon>
-          <v-icon
-            small
-            @click="getResults(props.item)"
-          >
-            assignment
-          </v-icon>
-          <validating-button color="error" confirm-count="2" action-text="Supr" @click-validated="deleteItem(props.item)"></validating-button>
-        </td>
+      <template v-slot:item.actions="{ item }">
+        <v-icon
+          small
+          class="mr-2"
+          @click="editItem(item)"
+        >
+          mdi-pencil
+        </v-icon>
+        <v-icon
+          small
+          @click="getResults(item)"
+        >
+          mdi-printer
+        </v-icon>
+        <validating-button color="error" confirm-count="2" action-text="Supr"
+                           @click-validated="deleteItem(item)"></validating-button>
       </template>
     </v-data-table>
   </v-card>
 </template>
+
+<style scoped>
+
+  button {
+    margin-left: 2em;
+  }
+
+</style>
