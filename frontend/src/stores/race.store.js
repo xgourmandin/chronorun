@@ -74,7 +74,7 @@ export default {
     },
     startRace({ commit, state }, raceId) {
       let race = findRaceInState(state.races, raceId);
-      api().put('/start', race).then((r) => {
+      api().put('/race/start', race).then((r) => {
         let result = r.data
         delete result._links
         commit('UPDATE_RACE', result)

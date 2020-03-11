@@ -3,6 +3,7 @@ package org.gx.chronorun.repository;
 import org.gx.chronorun.model.Race;
 import org.gx.chronorun.model.Result;
 import org.springframework.data.mongodb.repository.MongoRepository;
+import org.springframework.data.mongodb.repository.Query;
 import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 import org.springframework.web.bind.annotation.CrossOrigin;
 
@@ -17,5 +18,5 @@ public interface ResultRepository extends MongoRepository<Result, String> {
 
     List<Result> findAll();
 
-    List<Result> findByRace(Race race);
+    List<Result> findByRaceId(String race);
 }

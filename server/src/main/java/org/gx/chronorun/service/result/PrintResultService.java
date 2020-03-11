@@ -2,17 +2,18 @@ package org.gx.chronorun.service.result;
 
 import be.quodlibet.boxable.BaseTable;
 import be.quodlibet.boxable.datatable.DataTable;
-import com.google.common.io.Files;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
+import org.apache.pdfbox.pdmodel.PDPageContentStream;
 import org.apache.pdfbox.pdmodel.common.PDRectangle;
+import org.apache.pdfbox.pdmodel.font.PDType1Font;
 import org.gx.chronorun.model.Race;
 import org.gx.chronorun.model.Result;
 import org.gx.chronorun.repository.ResultRepository;
 import org.springframework.stereotype.Service;
 
-import java.io.File;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.time.Duration;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -37,20 +38,19 @@ public class PrintResultService {
         this.resultRepository = resultRepository;
     }
 
-    public void computeRaceResult(Race race) {
-        List<Result> results = resultRepository.findByRace(race);
-        printResultPdf(results);
+    public void computeRaceResult(Race race, OutputStream out) {
+        List<Result> results = resultRepository.findByRaceId(race.getId());
+        printResultPdf(results, out, race.getName() + " - "+race.getDistance()+ " Km" );
     }
 
-    private void printResultPdf(List<Result> results) {
+    private OutputStream printResultPdf(List<Result> results, OutputStream out, String title) {
         try (PDDocument pdDocument = initPdf();) {
-            drawOverallResultTable(results, pdDocument);
-            File file = new File("target/ListExample.pdf");
-            System.out.println("Sample file saved at : " + file.getAbsolutePath());
-            Files.createParentDirs(file);
-            pdDocument.save(file);
+            drawOverallResultTable(results, pdDocument, title);
+            pdDocument.save(out);
+            return null;
         } catch (IOException e) {
             e.printStackTrace();
+            return null;
         }
     }
 
@@ -62,13 +62,20 @@ public class PrintResultService {
         return mainDocument;
     }
 
-    private void drawOverallResultTable(List<Result> overallResults, PDDocument doc) throws IOException {
+    private void drawOverallResultTable(List<Result> overallResults, PDDocument doc, String title) throws IOException {
         List<List> datas = getPdfTableLines(overallResults);
 
         PDPage page = doc.getPage(0);
         float margin = 10;
+        PDPageContentStream contentStream = new PDPageContentStream(doc, page);
+        contentStream.beginText();
+        contentStream.newLineAtOffset(margin, page.getMediaBox().getHeight() - 2*margin);
+        contentStream.setFont(PDType1Font.TIMES_BOLD, 18 );
+        contentStream.showText(title);
+        contentStream.endText();
+        contentStream.close();
         float tableWidth = page.getMediaBox().getWidth() - (2 * margin);
-        float yStartNewPage = page.getMediaBox().getHeight() - (2 * margin);
+        float yStartNewPage = page.getMediaBox().getHeight() - (3 * margin);
         float yStart = yStartNewPage;
         float bottomMargin = 0;
         BaseTable dataTable = new BaseTable(yStart, yStartNewPage, bottomMargin, tableWidth, margin, doc, page, true,

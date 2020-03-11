@@ -36,7 +36,7 @@
         store.dispatch('deleteRace', race)
       },
       getResults: function (race) {
-        store.dispatch('printResult', race)
+        window.open("api/race/print/"+race.id, "_blank")
       }
     }
   }
