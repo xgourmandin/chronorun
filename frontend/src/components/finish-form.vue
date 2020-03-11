@@ -39,7 +39,7 @@
       }
     },
     mounted(){
-      store.dispatch('loadResults')
+      store.dispatch('loadMarks')
     },
   }
 </script>
@@ -51,9 +51,10 @@
       label="Dossard"
       v-model="bib"
       name="bib"
+      type="number"
       :placeholder="'Numéro de dossard'"
     />
-    <v-btn type="submit" color="success">Enregistrer</v-btn>
+    <v-btn type="submit" color="success" :disabled="bib == ''">Enregistrer</v-btn>
     <v-btn absolute right @click.stop="giveUpDialog = true">
       <v-icon>flag</v-icon>Abandon
     </v-btn>

@@ -2,6 +2,7 @@ package org.gx.chronorun.websocket;
 
 import lombok.Builder;
 import lombok.Data;
+import org.gx.chronorun.model.TimeMark;
 
 import java.time.LocalDateTime;
 
@@ -9,5 +10,7 @@ import java.time.LocalDateTime;
 @Builder
 public class MarkMessage implements WebSocketMessage{
 
-    public LocalDateTime markTime;
+    public String type;
+
+    public TimeMark mark;
 }

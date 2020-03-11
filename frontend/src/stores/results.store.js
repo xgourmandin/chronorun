@@ -8,9 +8,14 @@ export default {
   },
   getters: {},
   mutations: {
-    MARK(state, time) {
-      state.markedTimes.push(time.getTime())
-      saveState('race.markedTimes', state.markedTimes)
+    MARK(state, mark) {
+      state.markedTimes.push(mark)
+    },
+    SET_MARK(state, marks) {
+      state.markedTimes = marks
+    },
+    DELETE_MARK(state, id){
+      state.markedTimes.splice(state.markedTimes.findIndex(r => r.id === id), 1)
     },
     FINISH_SAVED(state) {
       state.markedTimes.shift()
@@ -40,10 +45,10 @@ export default {
         return Promise.reject(Error("Ce dossard a déjà été enregistré"))
       } else {
         if (state.markedTimes.length === 0) {
-          commit('MARK', new Date())
+          commit('MARK', {id: 0, mark: new Date()})
         }
-        const raceTime = state.markedTimes[0]
-        api().post('/finish', {bib: bib, raceTime: new Date(raceTime)})
+        const mark = state.markedTimes[0]
+        api().post('/finish', {bib: bib, mark: mark})
         return Promise.resolve(true)
       }
     },
@@ -66,6 +71,19 @@ export default {
     recordGiveUp(store, bib) {
       api().post('/finish/giveup', bib)
     },
+    loadMarks({commit}) {
+      api().get('/mark?sort=raceTime').then(r => {
+        let results = r.data._embedded.timemark
+        return results.map(c => {
+          delete c._links
+          return c
+        })
+      })
+        .then(results => commit('SET_MARK', results))
+    },
+    deleteMark(store, mark){
+      api().delete('/mark/'+mark.id)
+    },
     webSocketCreateResult({commit}, result) {
       commit('FINISH_SAVED')
       commit('ADD_RESULT', result)
@@ -76,8 +94,11 @@ export default {
     webSocketUpdateResult({commit}, result) {
       commit('UPDATE_RESULT', result)
     },
-    webSocketMarkTime({commit}, raceTime) {
+    webSocketCreateMark({commit}, raceTime) {
       commit('MARK', raceTime)
+    },
+    webSocketDeleteMark({commit}, mark) {
+      commit('DELETE_MARK', mark.id)
     }
   }
 }

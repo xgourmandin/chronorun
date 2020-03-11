@@ -30,7 +30,7 @@
           <router-view></router-view>
       </v-content>
       <v-footer color="indigo" app>
-          <span class="white--text">&copy; 2019</span>
+          <span class="white--text">&copy; 2020</span>
         <v-spacer></v-spacer>
         <realtime-server></realtime-server>
       </v-footer>

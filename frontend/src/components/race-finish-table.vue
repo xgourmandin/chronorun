@@ -1,13 +1,16 @@
 <script>
   import {mapState} from 'vuex'
-  import {padNumber} from "../utils/number-utils";
+  import store from '../store'
+  import ValidatingButton from "./validating-button"
 
   export default {
+    components: {ValidatingButton},
     data: function () {
       return {
         search: '',
         headers: [
-          {text: 'Heure d\'arrivée', value: 'raceTime'}
+          {text: 'Heure d\'arrivée', value: 'raceTime'},
+          {text: 'Actions', value: 'act', sortable: false}
         ],
         pagination: {
           rowsPerPage: 25
@@ -20,10 +23,9 @@
       }),
     },
     methods: {
-      timeFormat: function (millis) {
-        let time = new Date(millis)
-        return padNumber(time.getHours()) + "H" + padNumber(time.getMinutes()) + "M" + padNumber(time.getSeconds()) + "s"
-      },
+      deleteItem: function(item) {
+        store.dispatch("deleteMark", item)
+      }
     }
   }
 </script>
@@ -41,7 +43,10 @@
         Pas de temps disponible
       </template>
       <template v-slot:items="props">
-        <td>{{ timeFormat(props.item) }}</td>
+        <td>{{ props.item.mark }}</td>
+        <td>
+          <validating-button color="error" confirm-count="0" action-text="Supr" @click-validated="deleteItem(props.item)"></validating-button>
+        </td>
       </template>
     </v-data-table>
   </v-card>
