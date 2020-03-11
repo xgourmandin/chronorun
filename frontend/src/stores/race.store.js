@@ -57,6 +57,11 @@ export default {
         commit('DELETE_RACE', race)
       })
     },
+    printResult(opts, race) {
+      api().get("/race/print/" + race.id).then(() => {
+
+      })
+    },
     loadRaces({commit}) {
       api().get("/race").then(r => {
         let races = r.data._embedded.race

@@ -3,14 +3,14 @@ package org.gx.chronorun.model;
 import lombok.Builder;
 import lombok.Data;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.time.Duration;
-import java.time.Instant;
 import java.time.LocalDateTime;
-import java.time.temporal.ChronoUnit;
 
 @Data
 @Builder
+@Document
 public class Result {
 
     @Id
@@ -30,9 +30,11 @@ public class Result {
     }
 
     public Float getMeanPaceByKm() {
-        if(Duration.ZERO.equals(getRaceDuration())) {
+        if (Duration.ZERO.equals(getRaceDuration())) {
             return 0f;
         }
-        return getRaceDuration().toMinutes() / race.getDistance();
+        float mean = (float) Math.round((getRaceDuration().toMinutes() / race.getDistance()) * 100) / 100;
+        return mean;
     }
+
 }

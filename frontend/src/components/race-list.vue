@@ -35,8 +35,8 @@
       deleteItem: function (race) {
         store.dispatch('deleteRace', race)
       },
-      getResults: function () {
-        
+      getResults: function (race) {
+        store.dispatch('printResult', race)
       }
     }
   }
