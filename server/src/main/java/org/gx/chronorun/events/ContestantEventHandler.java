@@ -1,24 +1,31 @@
 package org.gx.chronorun.events;
 
 import org.gx.chronorun.model.Contestant;
+import org.gx.chronorun.service.contestant.CategoryService;
 import org.gx.chronorun.websocket.ContestantMessage;
-import org.springframework.data.rest.core.annotation.HandleAfterCreate;
-import org.springframework.data.rest.core.annotation.HandleAfterDelete;
-import org.springframework.data.rest.core.annotation.HandleAfterSave;
-import org.springframework.data.rest.core.annotation.RepositoryEventHandler;
+import org.springframework.data.rest.core.annotation.*;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 
 @RepositoryEventHandler
 public class ContestantEventHandler extends AbstractEventHandler {
 
 
-    public ContestantEventHandler(SimpMessagingTemplate messagingTemplate) {
+    private CategoryService categoryService;
+
+    public ContestantEventHandler(SimpMessagingTemplate messagingTemplate, CategoryService categoryService) {
         super(messagingTemplate);
+        this.categoryService = categoryService;
     }
 
     @Override
     protected String getTopic() {
         return "/topic/contestant";
+    }
+
+
+    @HandleBeforeCreate
+    public void handleBeforeCreate(Contestant contestant) {
+        contestant.setCategory(categoryService.getContestantCategory(contestant.getBirthYear(), contestant.getSex()));
     }
 
     @HandleAfterCreate

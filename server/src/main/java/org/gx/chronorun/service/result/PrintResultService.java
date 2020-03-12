@@ -70,7 +70,7 @@ public class PrintResultService {
         PDPageContentStream contentStream = new PDPageContentStream(doc, page);
         contentStream.beginText();
         contentStream.newLineAtOffset(margin, page.getMediaBox().getHeight() - 2*margin);
-        contentStream.setFont(PDType1Font.TIMES_BOLD, 18 );
+        contentStream.setFont(PDType1Font.HELVETICA_BOLD, 18 );
         contentStream.showText(title);
         contentStream.endText();
         contentStream.close();
@@ -89,7 +89,6 @@ public class PrintResultService {
         List<List> data = new ArrayList<>();
         data.add(PDF_TABLE_HEADERS);
         overallResults.sort(Comparator.comparing(Result::getRaceTime));
-        Set<String> categories = overallResults.stream().map(r -> r.getContestant().getCategory()).collect(Collectors.toSet());
         Map<String, Integer> catPositions = new HashMap<>();
         int scratcPos = 1;
         for (Result r : overallResults) {

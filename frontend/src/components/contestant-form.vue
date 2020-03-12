@@ -4,9 +4,6 @@
   import EventBus from "../event-bus";
 
   export default {
-    components:{
-
-    },
     data() {
       return {
         name: '',
@@ -21,7 +18,8 @@
         editMode: false,
         editedId: null,
         importDialog: false,
-        csvFile: null
+        csvFile: null,
+        importRace: null
       }
 
     },
@@ -68,6 +66,8 @@
         this.sex = false;
         this.race = null
         this.club = ''
+        this.csvFile = null
+        this.importRace = null
       },
       saveContestant: function () {
         if (this.editMode) {
@@ -91,7 +91,9 @@
         this.cleanForm()
       },
       importCsv() {
-
+        store.dispatch('uploadCsv', {file: this.csvFile, race: this.importRace})
+        this.cleanForm()
+        this.importDialog = false
       }
     }
   }
@@ -181,7 +183,16 @@
           <span class="headline">Importer CSV</span>
         </v-card-title>
         <v-card-text>
-          <v-file-input chips class="smallinput" required label="Fichier CSV" v-model="csvFile"></v-file-input>
+          <v-file-input chips class="smallinput" required label="Fichier CSV" v-model="csvFile" accept="text/csv"></v-file-input>
+          <v-select
+            v-model="importRace"
+            :items="races"
+            :item-text="getRaceName"
+            item-value="id"
+            label="Sélectionner une course"
+            class="smallinput"
+          ></v-select>&nbsp;
+          <v-btn color="success" @click="importCsv" :disabled="csvFile == null || importRace == null">Importer</v-btn>
         </v-card-text>
       </v-card>
     </v-dialog>

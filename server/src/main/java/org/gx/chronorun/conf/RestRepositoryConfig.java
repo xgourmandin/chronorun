@@ -7,6 +7,8 @@ import org.gx.chronorun.model.Contestant;
 import org.gx.chronorun.model.Race;
 import org.gx.chronorun.model.Result;
 import org.gx.chronorun.model.TimeMark;
+import org.gx.chronorun.service.contestant.CategoryService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.rest.core.config.RepositoryRestConfiguration;
@@ -16,6 +18,7 @@ import org.springframework.messaging.simp.SimpMessagingTemplate;
 @Configuration
 public class RestRepositoryConfig implements RepositoryRestConfigurer {
 
+
     @Override
     public void configureRepositoryRestConfiguration(RepositoryRestConfiguration config) {
         config.exposeIdsFor(Contestant.class, Race.class, Result.class, TimeMark.class);
@@ -23,8 +26,8 @@ public class RestRepositoryConfig implements RepositoryRestConfigurer {
     }
 
     @Bean
-    public ContestantEventHandler contestantEventHandler(SimpMessagingTemplate template) {
-        return new ContestantEventHandler(template);
+    public ContestantEventHandler contestantEventHandler(SimpMessagingTemplate template, CategoryService categoryService) {
+        return new ContestantEventHandler(template, categoryService);
     }
 
     @Bean
