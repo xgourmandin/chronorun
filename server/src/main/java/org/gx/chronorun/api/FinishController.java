@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/finish")
+@RequestMapping("api/finish")
 public class FinishController {
 
     private static final String WS_TOPIC = "/topic/result";

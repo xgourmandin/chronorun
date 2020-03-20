@@ -53,8 +53,12 @@ public class ContestantImportTest {
 
     @Test
     public void testImportContestant() throws IOException {
-        final Reader reader = new InputStreamReader(new ClassPathResource("csv_import.csv").getInputStream());
-        importContestantUseCase.importContestant(reader, "some-race");
+        final Reader reader = new InputStreamReader(new ClassPathResource("csv_import.csv").getInputStream(), "UTF-8");
+        try {
+            importContestantUseCase.importContestant(reader, "some-race");
+        } catch (NumberFormatException e) {
+            e.printStackTrace();
+        }
         Mockito.verify(contestantRepository).saveAll(any());
     }
 

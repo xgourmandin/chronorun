@@ -12,7 +12,7 @@ import java.io.InputStreamReader;
 import java.io.Reader;
 
 @RestController
-@RequestMapping("contestant")
+@RequestMapping("api/contestant")
 public class ContestantController {
 
 
@@ -24,7 +24,7 @@ public class ContestantController {
 
     @PostMapping("import")
     public void uploadContestant(@RequestParam("file") MultipartFile file, @RequestParam("raceId") String raceId) throws IOException {
-        Reader reader = new InputStreamReader(file.getInputStream());
+        Reader reader = new InputStreamReader(file.getInputStream(), "UTF-8");
         importContestantUseCase.importContestant(reader, raceId);
     }
 }

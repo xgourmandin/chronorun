@@ -41,10 +41,10 @@ public class ImportContestantService implements ImportContestantUseCase {
                     if (!"annulée".equalsIgnoreCase(csvRecord.get(1))) {
                         final Integer birthYear = Integer.valueOf(csvRecord.get(15));
                         final Sex sex = Sex.valueOf(csvRecord.get(10));
-                        String catergory = categoryService.getContestantCategory(birthYear, sex);
+                        String category = categoryService.getContestantCategory(birthYear, sex);
                         contestants.add(Contestant.builder().name(csvRecord.get(2) + " " + csvRecord.get(3)).sex(sex)
                                 .bib(Integer.valueOf(csvRecord.get(11))).birthYear(birthYear)
-                                .club(csvRecord.get(16)).category(catergory).race(raceId).build());
+                                .club(csvRecord.get(16)).category(category).race(raceId).build());
                     }
                 }
                 log.info(String.format("Import %d contestants into database", contestants.size()));

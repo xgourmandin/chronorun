@@ -11,7 +11,7 @@ import java.io.IOException;
 import java.time.ZoneOffset;
 
 @RestController
-@RequestMapping("/race")
+@RequestMapping("api/race")
 @CrossOrigin
 public class RaceController {
 

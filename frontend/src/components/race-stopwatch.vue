@@ -92,7 +92,7 @@ export default {
 
 .chrono p {
   font-size: 7rem;
-  color: white;
+  color: #222222;
 }
 
 .chrono p span {

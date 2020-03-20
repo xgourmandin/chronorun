@@ -12,7 +12,7 @@ module.exports = {
           }
         }
         : // Proxy API endpoints a local mock API.
-        {before: require('./tests/mock-api')}),
+        {}),
       port: 8081
     },
   }

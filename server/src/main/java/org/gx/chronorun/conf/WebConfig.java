@@ -10,7 +10,6 @@ import java.time.ZoneId;
 import java.util.TimeZone;
 
 @Configuration
-@EnableWebMvc
 public class WebConfig implements WebMvcConfigurer {
 
     @PostConstruct
